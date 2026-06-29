@@ -32,8 +32,7 @@ fi
 mkdir -p /workspace
 
 if [ "$NEED_CHOWN" = "1" ]; then
-  # Chown only home subdirs we own, skipping read-only bind mounts
-  # (.ssh and .gitconfig are commonly mounted from the host).
+  # Chown only home subdirs we own.
   for entry in /home/$USER_NAME/.config \
                /home/$USER_NAME/.local \
                /home/$USER_NAME/.cache \

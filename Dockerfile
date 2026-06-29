@@ -79,6 +79,27 @@ RUN curl -fsSL -o /tmp/lazygit.tar.gz https://github.com/jesseduffield/lazygit/r
   && tar -C /usr/local/bin -xzf /tmp/lazygit.tar.gz lazygit \
   && rm -f /tmp/lazygit.tar.gz
 
+# 1Password CLI (secrets inside the container, none forwarded from host).
+ENV OP_VERSION=2.34.1
+RUN curl -fsSL -o /tmp/op.zip \
+    "https://cache.agilebits.com/dist/1P/op2/pkg/v${OP_VERSION}/op_linux_amd64_v${OP_VERSION}.zip" \
+  && unzip -d /tmp/op /tmp/op.zip \
+  && mv /tmp/op/op /usr/local/bin/op \
+  && rm -rf /tmp/op /tmp/op.zip \
+  && groupadd -f onepassword-cli \
+  && chgrp onepassword-cli /usr/local/bin/op \
+  && chmod g+s /usr/local/bin/op \
+  && op --version
+
+# GitHub CLI (git HTTPS auth + GitHub API via GH_TOKEN).
+ENV GH_VERSION=2.95.0
+RUN curl -fsSL -o /tmp/gh.tar.gz \
+    "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_amd64.tar.gz" \
+  && tar -C /tmp -xzf /tmp/gh.tar.gz \
+  && mv "/tmp/gh_${GH_VERSION}_linux_amd64/bin/gh" /usr/local/bin/gh \
+  && rm -rf /tmp/gh.tar.gz "/tmp/gh_${GH_VERSION}_linux_amd64" \
+  && gh --version
+
 RUN (userdel -r ubuntu 2>/dev/null || true) \
   && groupadd -g 1000 dev \
   && useradd -m -u 1000 -g 1000 -s /usr/bin/zsh dev

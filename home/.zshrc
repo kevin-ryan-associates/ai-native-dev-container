@@ -122,3 +122,8 @@ export LESS='-R --use-color -Dd+r$Du+b'
 if [[ -o interactive && -f "$HOME/.config/aidev/banner.sh" ]]; then
   source "$HOME/.config/aidev/banner.sh"
 fi
+
+# ---- creds (1Password secret loader) --------------------------------------
+if [[ -f "$HOME/.config/aidev/creds.zsh" ]]; then
+  source "$HOME/.config/aidev/creds.zsh"
+fi

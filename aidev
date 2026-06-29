@@ -71,12 +71,4 @@ if [ -t 0 ] && [ -t 1 ]; then
   docker_args+=( -it )
 fi
 
-if [ -f "$HOME/.gitconfig" ]; then
-  docker_args+=( -v "$HOME/.gitconfig:/home/dev/.gitconfig:ro" )
-fi
-
-if [ -d "$HOME/.ssh" ]; then
-  docker_args+=( -v "$HOME/.ssh:/home/dev/.ssh:ro" )
-fi
-
 exec docker run "${docker_args[@]}" "$IMAGE_NAME" "$tool" "$@"
