@@ -63,12 +63,6 @@ creds() {
     return 1
   fi
 
-  # Git identity
-  if [[ -n "${GIT_AUTHOR_NAME:-}" && -n "${GIT_AUTHOR_EMAIL:-}" ]]; then
-    git config --global user.name  "$GIT_AUTHOR_NAME"
-    git config --global user.email "$GIT_AUTHOR_EMAIL"
-  fi
-
   # Git HTTPS auth via gh
   if [[ -n "${GH_TOKEN:-}" ]] && command -v gh >/dev/null 2>&1; then
     gh auth setup-git >/dev/null 2>&1
@@ -77,6 +71,12 @@ creds() {
   # Git HTTPS auth via glab
   if [[ -n "${GITLAB_TOKEN:-}" ]] && command -v glab >/dev/null 2>&1; then
     print -r -- "$GITLAB_TOKEN" | glab auth login --hostname gitlab.com --stdin --git-protocol https >/dev/null 2>&1
+  fi
+
+  # Git identity
+  if [[ -n "${GIT_AUTHOR_NAME:-}" && -n "${GIT_AUTHOR_EMAIL:-}" ]]; then
+    git config --global user.name  "$GIT_AUTHOR_NAME"
+    git config --global user.email "$GIT_AUTHOR_EMAIL"
   fi
 
   print "Credentials loaded ($resolved_count values)."
