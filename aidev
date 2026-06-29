@@ -61,6 +61,7 @@ fi
 
 docker_args=(
   --rm
+  --privileged
   -e HOST_UID="$(id -u)"
   -e HOST_GID="$(id -g)"
   -v "$PWD:/workspace"

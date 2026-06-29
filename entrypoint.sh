@@ -47,6 +47,39 @@ if [ "$NEED_CHOWN" = "1" ]; then
   chown "$TARGET_UID":"$TARGET_GID" /home/$USER_NAME 2>/dev/null || true
 fi
 
+# Docker-in-Docker: start the daemon as root, then drop to the dev user.
+# Try the fast overlay2 driver first; fall back to vfs where overlay2 is
+# unavailable (e.g. Docker Desktop for macOS nested containers).
+gpasswd -a "$USER_NAME" docker >/dev/null 2>&1 || true
+
+start_dockerd() {
+  dockerd -G docker --host=unix:///var/run/docker.sock "$@" >/var/log/dockerd.log 2>&1 &
+  DOCKER_PID=$!
+}
+
+wait_dockerd() {
+  for _ in $(seq 1 60); do
+    if docker info >/dev/null 2>&1; then return 0; fi
+    if ! kill -0 "$DOCKER_PID" 2>/dev/null; then return 1; fi
+    sleep 1
+  done
+  return 1
+}
+
+start_dockerd --storage-driver=overlay2
+if ! wait_dockerd; then
+  echo "overlay2 unavailable, falling back to vfs storage driver" >&2
+  kill "$DOCKER_PID" 2>/dev/null || true
+  wait "$DOCKER_PID" 2>/dev/null || true
+  rm -rf /var/lib/docker/*
+  start_dockerd --storage-driver=vfs
+  if ! wait_dockerd; then
+    echo "dockerd did not become ready:" >&2
+    cat /var/log/dockerd.log >&2
+    exit 1
+  fi
+fi
+
 if [ "$#" -eq 0 ]; then
   set -- zsh
 fi

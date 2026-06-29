@@ -33,6 +33,7 @@ RUN apt-get update \
     gzip \
     locales \
     gosu \
+    openssh-client \
   && rm -rf /var/lib/apt/lists/* \
   && ln -s /usr/bin/batcat /usr/local/bin/bat \
   && ln -s /usr/bin/fdfind /usr/local/bin/fd
@@ -100,9 +101,31 @@ RUN curl -fsSL -o /tmp/gh.tar.gz \
   && rm -rf /tmp/gh.tar.gz "/tmp/gh_${GH_VERSION}_linux_amd64" \
   && gh --version
 
+# GitLab CLI (git HTTPS auth + GitLab API via GITLAB_TOKEN).
+ENV GLAB_VERSION=1.105.0
+RUN curl -fsSL -o /tmp/glab.tar.gz \
+    "https://gitlab.com/gitlab-org/cli/-/releases/v${GLAB_VERSION}/downloads/glab_${GLAB_VERSION}_linux_amd64.tar.gz" \
+  && tar -C /tmp -xzf /tmp/glab.tar.gz \
+  && mv /tmp/bin/glab /usr/local/bin/glab \
+  && rm -rf /tmp/glab.tar.gz /tmp/bin \
+  && glab --version
+
+# Docker Engine + CLI + buildx + compose (Docker-in-Docker). The daemon is
+# started by the entrypoint at runtime, not during build.
+RUN install -m 0755 -d /etc/apt/keyrings \
+  && curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc \
+  && chmod a+r /etc/apt/keyrings/docker.asc \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) stable" > /etc/apt/sources.list.d/docker.list \
+  && printf '#!/bin/sh\nexit 101\n' > /usr/sbin/policy-rc.d && chmod +x /usr/sbin/policy-rc.d \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin \
+  && rm -f /usr/sbin/policy-rc.d \
+  && rm -rf /var/lib/apt/lists/* \
+  && groupadd -f docker
+
 RUN (userdel -r ubuntu 2>/dev/null || true) \
   && groupadd -g 1000 dev \
-  && useradd -m -u 1000 -g 1000 -s /usr/bin/zsh dev
+  && useradd -m -u 1000 -g 1000 -G docker -s /usr/bin/zsh dev
 
 # AstroNvim template pinned to a specific commit for reproducibility.
 ENV ASTRONVIM_TEMPLATE_REF=49a7161b776f8bc6c23508819ea1ad4e7b359bee

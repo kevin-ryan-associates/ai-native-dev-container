@@ -22,6 +22,8 @@ The container is built on Ubuntu 24.04 and includes:
 | **yq** / **jq** | YAML/JSON processors |
 | **op** (1Password CLI) | Secrets management |
 | **gh** (GitHub CLI) | GitHub API + git HTTPS auth |
+| **glab** (GitLab CLI) | GitLab API + git HTTPS auth |
+| **docker** + buildx + compose | Docker-in-Docker (daemon starts via entrypoint) |
 | Node.js 20, Python 3 | Language runtimes |
 
 ## Requirements
@@ -63,6 +65,19 @@ aidev update
 
 The container mounts `$PWD` to `/workspace`. No host credentials (git config, SSH keys, or API tokens) are forwarded — secrets are sourced from 1Password via the pre-installed `op` CLI inside the container.
 
+### Docker (Docker-in-Docker)
+
+The container ships with a full Docker Engine (plus `buildx` and `compose` v2 plugins). The inner `dockerd` is started automatically by the entrypoint on launch, so `docker`, `docker buildx`, and `docker compose` are ready immediately. `aidev` runs the container with `--privileged`, which the daemon requires.
+
+```bash
+docker info
+docker run --rm hello-world
+docker build -t myimage .
+docker compose up
+```
+
+The inner Docker image and build cache are **ephemeral** — they live in the container's writable layer and are discarded when the `--rm` container exits, so base images are re-pulled each session.
+
 ### UID/GID passthrough
 
 The entrypoint automatically remaps the `dev` user inside the container to match your host UID/GID (`HOST_UID` / `HOST_GID`), so files created in `/workspace` are owned by you on the host.
@@ -80,6 +95,7 @@ The container ships with the 1Password CLI (`op`) and GitHub CLI (`gh`) pre-inst
    |------|--------|---------|
    | `git` | `username`, `email` | Git commit identity |
    | `github` | `token` (PAT with `repo`, `read:org`, `workflow` scopes) | `gh` CLI + git HTTPS auth |
+   | `gitlab` | `token` (PAT with `api`, `write_repository` scopes) | `glab` CLI + git HTTPS auth |
    | `opencode-zen` | `api-key` (from [opencode.ai/auth](https://opencode.ai/auth)) | OpenCode Zen inference |
 
 3. Create a 1Password **service account** scoped to the DevContainer vault (read access). Save the token — you'll paste it into `creds` each session.
@@ -94,6 +110,7 @@ This prompts for your 1Password service account token (hidden input), then resol
 
 - `GIT_AUTHOR_NAME` / `GIT_AUTHOR_EMAIL` → `git config --global user.name/email`
 - `GH_TOKEN` → `gh` CLI + `gh auth setup-git` (wires git HTTPS auth)
+- `GITLAB_TOKEN` → `glab` CLI + git credential helper (wires git HTTPS auth)
 - `OPENCODE_API_KEY` → OpenCode Zen inference
 
 The template at `~/.config/aidev/credentials.env` uses `op://DevContainer/...` references. Override the path with the `CREDS_TEMPLATE` environment variable if your vault or item names differ.
