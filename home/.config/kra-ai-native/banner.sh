@@ -34,15 +34,14 @@ local BOLD=$'\e[1m'
 local DIM=$'\e[2m'
 local RST=$'\e[0m'
 
-# "KRA AI DEV" rendered in ANSI Shadow style, colored per-word.
-# KRA (cyan)   AI (green)   DEV (magenta)
+# "KRA AI NATIVE" rendered in ANSI Shadow style, all in matrix green.
 print
-print "${C_CYAN}██╗  ██╗${C_CYAN}██████╗ ${C_CYAN} █████╗ ${C_DIM}    ${C_GREEN} █████╗ ${C_GREEN}██╗${C_DIM}    ${C_MAG}██████╗ ${C_MAG}███████╗${C_MAG}██╗   ██╗${RST}"
-print "${C_CYAN}██║ ██╔╝${C_CYAN}██╔══██╗${C_CYAN}██╔══██╗${C_DIM}    ${C_GREEN}██╔══██╗${C_GREEN}██║${C_DIM}    ${C_MAG}██╔══██╗${C_MAG}██╔════╝${C_MAG}██║   ██║${RST}"
-print "${C_CYAN}█████╔╝ ${C_CYAN}██████╔╝${C_CYAN}███████║${C_DIM}    ${C_GREEN}███████║${C_GREEN}██║${C_DIM}    ${C_MAG}██║  ██║${C_MAG}█████╗  ${C_MAG}██║   ██║${RST}"
-print "${C_CYAN_D}██╔═██╗ ${C_CYAN_D}██╔══██╗${C_CYAN_D}██╔══██║${C_DIM}    ${C_GREEN_D}██╔══██║${C_GREEN_D}██║${C_DIM}    ${C_MAG_D}██║  ██║${C_MAG_D}██╔══╝  ${C_MAG_D}╚██╗ ██╔╝${RST}"
-print "${C_CYAN_D}██║  ██╗${C_CYAN_D}██║  ██║${C_CYAN_D}██║  ██║${C_DIM}    ${C_GREEN_D}██║  ██║${C_GREEN_D}██║${C_DIM}    ${C_MAG_D}██████╔╝${C_MAG_D}███████╗${C_MAG_D} ╚████╔╝ ${RST}"
-print "${C_DIM}╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝    ╚═╝  ╚═╝╚═╝    ╚═════╝ ╚══════╝  ╚═══╝  ${RST}"
+print "${C_GREEN}██╗  ██╗██████╗  █████╗ ${C_DIM}    ${C_GREEN} █████╗ ██╗${C_DIM}    ${C_GREEN}██╗  ███╗ █████╗ ███████╗██╗██╗   ██╗███████╗${RST}"
+print "${C_GREEN}██║ ██╔╝██╔══██╗██╔══██╗${C_DIM}    ${C_GREEN}██╔══██╗██║${C_DIM}    ${C_GREEN}██║ ██╔╝██╔══██╗╚═══██╔╝██║██║   ██║██╔════╝${RST}"
+print "${C_GREEN}█████╔╝ ██████╔╝███████║${C_DIM}    ${C_GREEN}███████║██║${C_DIM}    ${C_GREEN}█████╔╝ ███████║  ██║  ██║██║██║   ██║█████╗  ${RST}"
+print "${C_GREEN_D}██╔═██╗ ██╔══██╗██╔══██║${C_DIM}    ${C_GREEN_D}██╔══██║██║${C_DIM}    ${C_GREEN_D}██╔███╗ ██╔══██║  ██║  ██║██║╚██╗ ██╔╝██╔════╝${RST}"
+print "${C_GREEN_D}██║  ██╗██║  ██║██║  ██║${C_DIM}    ${C_GREEN_D}██║  ██║██║${C_DIM}    ${C_GREEN_D}██║╚██╗ ██║  ██║  ██║  ██║██║ ╚████╔╝ ███████╗${RST}"
+print "${C_DIM}╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝    ╚═╝  ╚═╝╚═╝    ╚═╝ ╚═╝╚═╝  ╚═╝  ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝${RST}"
 print
 
 # Sub-banner: tools / versions
