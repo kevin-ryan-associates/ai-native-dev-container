@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-USER_NAME=dev
+USER_NAME=engineer
 TARGET_UID=${HOST_UID:-1000}
 TARGET_GID=${HOST_GID:-1000}
 
@@ -47,7 +47,7 @@ if [ "$NEED_CHOWN" = "1" ]; then
   chown "$TARGET_UID":"$TARGET_GID" /home/$USER_NAME 2>/dev/null || true
 fi
 
-# Docker-in-Docker: start the daemon as root, then drop to the dev user.
+# Docker-in-Docker: start the daemon as root, then drop to the engineer user.
 # Detect overlay support upfront so we pick the right storage driver in a
 # single attempt, avoiding a doomed overlay2 start (and a scary fallback
 # message) on Docker Desktop for macOS nested containers.

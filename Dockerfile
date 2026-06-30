@@ -125,24 +125,24 @@ RUN install -m 0755 -d /etc/apt/keyrings \
   && groupadd -f docker
 
 RUN (userdel -r ubuntu 2>/dev/null || true) \
-  && groupadd -g 1000 dev \
-  && useradd -m -u 1000 -g 1000 -G docker -s /usr/bin/zsh dev
+  && groupadd -g 1000 engineer \
+  && useradd -m -u 1000 -g 1000 -G docker -s /usr/bin/zsh engineer
 
 # AstroNvim template pinned to a specific commit for reproducibility.
 ENV ASTRONVIM_TEMPLATE_REF=49a7161b776f8bc6c23508819ea1ad4e7b359bee
 
-USER dev
-ENV HOME=/home/dev
-WORKDIR /home/dev
+USER engineer
+ENV HOME=/home/engineer
+WORKDIR /home/engineer
 
 # AstroNvim
-RUN git clone https://github.com/AstroNvim/template /home/dev/.config/nvim \
-  && cd /home/dev/.config/nvim \
+RUN git clone https://github.com/AstroNvim/template /home/engineer/.config/nvim \
+  && cd /home/engineer/.config/nvim \
   && git checkout ${ASTRONVIM_TEMPLATE_REF} \
   && rm -rf .git
 
 # AstroNvim user overlay (custom plugin specs).
-COPY --chown=dev:dev home/nvim-overlay/lua/plugins/ /home/dev/.config/nvim/lua/plugins/
+COPY --chown=engineer:engineer home/nvim-overlay/lua/plugins/ /home/engineer/.config/nvim/lua/plugins/
 
 # First sync: clone all plugins and run their build hooks (treesitter parsers etc.).
 RUN nvim --headless "+Lazy! sync" +qa 2>&1 | tail -n 30 \
@@ -153,19 +153,19 @@ RUN nvim --headless "+Lazy! sync" +qa 2>&1 | tail -n 30 \
 RUN nvim --headless "+Lazy! sync" +qa 2>&1 | tail -n 20 || true
 
 # OpenCode (AI coding agent). Installs to $HOME/.opencode/bin/opencode for the
-# dev user. We pass --no-modify-path because we manage PATH ourselves in .zshrc.
+# engineer user. We pass --no-modify-path because we manage PATH ourselves in .zshrc.
 RUN curl -fsSL https://raw.githubusercontent.com/anomalyco/opencode/master/install -o /tmp/opencode-install.sh \
   && bash /tmp/opencode-install.sh --no-modify-path \
   && rm -f /tmp/opencode-install.sh \
-  && /home/dev/.opencode/bin/opencode --version
+  && /home/engineer/.opencode/bin/opencode --version
 
 # Shell config (zsh + starship + plugins via zinit).
-COPY --chown=dev:dev home/.zshrc /home/dev/.zshrc
-COPY --chown=dev:dev home/.config/starship.toml /home/dev/.config/starship.toml
-COPY --chown=dev:dev home/.config/bat /home/dev/.config/bat
-COPY --chown=dev:dev home/.config/lazygit /home/dev/.config/lazygit
-COPY --chown=dev:dev home/.config/kra-ai-native /home/dev/.config/kra-ai-native
-COPY --chown=dev:dev home/.config/opencode /home/dev/.config/opencode
+COPY --chown=engineer:engineer home/.zshrc /home/engineer/.zshrc
+COPY --chown=engineer:engineer home/.config/starship.toml /home/engineer/.config/starship.toml
+COPY --chown=engineer:engineer home/.config/bat /home/engineer/.config/bat
+COPY --chown=engineer:engineer home/.config/lazygit /home/engineer/.config/lazygit
+COPY --chown=engineer:engineer home/.config/kra-ai-native /home/engineer/.config/kra-ai-native
+COPY --chown=engineer:engineer home/.config/opencode /home/engineer/.config/opencode
 
 # Pre-install zinit and plugins so first shell launch is instant.
 # .zshrc bootstraps zinit on first run; we trigger it twice (first run clones
@@ -176,7 +176,7 @@ RUN zsh -i -c 'exit' >/dev/null 2>&1 || true \
 USER root
 COPY entrypoint.sh /usr/local/bin/entrypoint
 RUN chmod +x /usr/local/bin/entrypoint \
-  && chown -R 1000:1000 /home/dev
+  && chown -R 1000:1000 /home/engineer
 
 WORKDIR /workspace
 ENTRYPOINT ["/usr/local/bin/entrypoint"]

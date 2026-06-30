@@ -107,7 +107,7 @@ The inner Docker image and build cache are **ephemeral** — they live in the co
 
 ### UID/GID passthrough
 
-The entrypoint automatically remaps the `dev` user inside the container to match your host UID/GID (`HOST_UID` / `HOST_GID`), so files created in `/workspace` are owned by you on the host.
+The entrypoint automatically remaps the `engineer` user inside the container to match your host UID/GID (`HOST_UID` / `HOST_GID`), so files created in `/workspace` are owned by you on the host.
 
 ## Secrets management
 
