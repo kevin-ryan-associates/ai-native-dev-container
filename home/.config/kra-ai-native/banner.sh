@@ -51,5 +51,5 @@ local node_v=$(node -v 2>/dev/null)
 local py_v=$(python3 -V 2>/dev/null | awk '{print $2}')
 
 print "  ${BOLD}${C_GREEN}»${RST} ${C_TEXT}nvim${RST} ${C_DIM}${nvim_v}${RST}   ${BOLD}${C_GREEN}»${RST} ${C_TEXT}zsh${RST} ${C_DIM}${zsh_v}${RST}   ${BOLD}${C_GREEN}»${RST} ${C_TEXT}node${RST} ${C_DIM}${node_v}${RST}   ${BOLD}${C_GREEN}»${RST} ${C_TEXT}python${RST} ${C_DIM}${py_v}${RST}"
-print "  ${DIM}${C_DIM}// ai-native environment${RST}"
+print "  ${DIM}${C_DIM}// ai-native development environment${RST}"
 print
