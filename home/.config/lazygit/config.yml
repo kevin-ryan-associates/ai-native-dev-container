@@ -1,5 +1,5 @@
 # lazygit config -- neon-dark theme
-# matches the aidev palette: cyan / green / magenta / blue / amber / red on near-black
+# matches the kra-ai-native palette: cyan / green / magenta / blue / amber / red on near-black
 
 gui:
   # Nerd Fonts v3 icons (matches eza / starship / fzf setup).

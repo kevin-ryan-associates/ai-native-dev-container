@@ -1,5 +1,5 @@
 # Starship config -- dark/techy neon palette
-# matches the aidev banner: cyan / green / magenta / amber on near-black
+# matches the kra-ai-native banner: cyan / green / magenta / amber on near-black
 
 "$schema" = 'https://starship.rs/config-schema.json'
 

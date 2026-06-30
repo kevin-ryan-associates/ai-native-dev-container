@@ -163,7 +163,7 @@ COPY --chown=dev:dev home/.zshrc /home/dev/.zshrc
 COPY --chown=dev:dev home/.config/starship.toml /home/dev/.config/starship.toml
 COPY --chown=dev:dev home/.config/bat /home/dev/.config/bat
 COPY --chown=dev:dev home/.config/lazygit /home/dev/.config/lazygit
-COPY --chown=dev:dev home/.config/aidev /home/dev/.config/aidev
+COPY --chown=dev:dev home/.config/kra-ai-native /home/dev/.config/kra-ai-native
 COPY --chown=dev:dev home/.config/opencode /home/dev/.config/opencode
 
 # Pre-install zinit and plugins so first shell launch is instant.

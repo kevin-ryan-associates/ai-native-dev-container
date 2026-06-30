@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+command -v docker >/dev/null 2>&1 || { echo "kra-ai-native: docker not found on PATH" >&2; exit 1; }
+
+IMAGE_NAME=${KRA_AI_NATIVE_IMAGE:-kra-ai-native:latest}
+KRA_AI_NATIVE_HOME=${KRA_AI_NATIVE_HOME:-$HOME/.local/share/kra-ai-native}
+
+usage() {
+  cat <<EOF
+Usage:
+  kra-ai-native            Launch zsh in current directory (default)
+  kra-ai-native build      Build the image from $KRA_AI_NATIVE_HOME
+  kra-ai-native update     Rebuild the image with --pull (refresh bases)
+  kra-ai-native shell      Launch zsh in current directory
+  kra-ai-native [--build] <tool> [args...]
+
+Examples:
+  kra-ai-native
+  kra-ai-native nvim .
+  kra-ai-native shell
+  kra-ai-native --build nvim .
+EOF
+}
+
+build_image() {
+  if [ ! -f "$KRA_AI_NATIVE_HOME/Dockerfile" ]; then
+    echo "Missing Dockerfile in $KRA_AI_NATIVE_HOME. Run install.sh from the repo first." >&2
+    exit 1
+  fi
+  docker build "$@" -t "$IMAGE_NAME" "$KRA_AI_NATIVE_HOME"
+}
+
+case "${1:-}" in
+  -h|--help)
+    usage
+    exit 0
+    ;;
+  build)
+    build_image
+    exit 0
+    ;;
+  update)
+    build_image --pull
+    exit 0
+    ;;
+  shell)
+    shift
+    set -- zsh "$@"
+    ;;
+  --build)
+    shift
+    build_image
+    ;;
+esac
+
+tool=${1:-zsh}
+shift || true
+
+if ! docker image inspect "$IMAGE_NAME" >/dev/null 2>&1; then
+  build_image
+fi
+
+docker_args=(
+  --rm
+  --privileged
+  -e HOST_UID="$(id -u)"
+  -e HOST_GID="$(id -g)"
+  -v "$PWD:/workspace"
+  -w /workspace
+)
+
+if [ -t 0 ] && [ -t 1 ]; then
+  docker_args+=( -it )
+fi
+
+exec docker run "${docker_args[@]}" "$IMAGE_NAME" "$tool" "$@"

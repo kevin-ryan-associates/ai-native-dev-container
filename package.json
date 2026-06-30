@@ -1,0 +1,37 @@
+{
+  "name": "kra-ai-native",
+  "version": "0.1.0",
+  "description": "Docker-based AI-native dev environment with OpenCode, Neovim (AstroNvim), and a curated CLI toolbelt.",
+  "license": "MIT",
+  "author": "Kevin Ryan Associates",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevin-ryan-associates/ai-native-dev-container.git"
+  },
+  "homepage": "https://github.com/kevin-ryan-associates/ai-native-dev-container#readme",
+  "bin": {
+    "kra-ai-native": "bin/kra-ai-native.js"
+  },
+  "files": [
+    "bin/kra-ai-native.js",
+    "kra-ai-native",
+    "Dockerfile",
+    "entrypoint.sh",
+    "home"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "os": [
+    "darwin",
+    "linux"
+  ],
+  "keywords": [
+    "devcontainer",
+    "docker",
+    "neovim",
+    "opencode",
+    "ai",
+    "astronvim"
+  ]
+}

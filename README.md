@@ -33,6 +33,16 @@ The container is built on Ubuntu 24.04 and includes:
 
 ## Installation
 
+### npm (recommended)
+
+```bash
+npm install -g kra-ai-native
+```
+
+This installs the `kra-ai-native` command globally. The bundled `Dockerfile` and config overlay are referenced in-place from `node_modules`, so `npm update -g kra-ai-native` refreshes them automatically. Run `kra-ai-native update` afterwards to rebuild the image against the new files.
+
+### curl
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kevin-ryan-associates/ai-native-dev-container/main/install.sh | bash
 ```
@@ -45,29 +55,29 @@ cd ai-native-dev-container
 bash install.sh
 ```
 
-`install.sh` copies the project files to `~/.local/share/aidev` and installs the `aidev` command to `/usr/local/bin` (or `~/.local/bin` if you don't have write access to `/usr/local/bin`).
+`install.sh` copies the project files to `~/.local/share/kra-ai-native` and installs the `kra-ai-native` command to `/usr/local/bin` (or `~/.local/bin` if you don't have write access to `/usr/local/bin`). Existing `devenv` and `aidev` installs are migrated automatically.
 
 ## Usage
 
 ```bash
 # Launch an interactive zsh shell in the current directory
-aidev
+kra-ai-native
 
 # Open the current directory in Neovim
-aidev nvim .
+kra-ai-native nvim .
 
 # Build (or rebuild) the Docker image explicitly
-aidev build
+kra-ai-native build
 
 # Rebuild with refreshed base images
-aidev update
+kra-ai-native update
 ```
 
 The container mounts `$PWD` to `/workspace`. No host credentials (git config, SSH keys, or API tokens) are forwarded — secrets are sourced from 1Password via the pre-installed `op` CLI inside the container.
 
 ### Docker (Docker-in-Docker)
 
-The container ships with a full Docker Engine (plus `buildx` and `compose` v2 plugins). The inner `dockerd` is started automatically by the entrypoint on launch, so `docker`, `docker buildx`, and `docker compose` are ready immediately. `aidev` runs the container with `--privileged`, which the daemon requires.
+The container ships with a full Docker Engine (plus `buildx` and `compose` v2 plugins). The inner `dockerd` is started automatically by the entrypoint on launch, so `docker`, `docker buildx`, and `docker compose` are ready immediately. `kra-ai-native` runs the container with `--privileged`, which the daemon requires.
 
 ```bash
 docker info
@@ -106,21 +116,22 @@ The container ships with the 1Password CLI (`op`) and GitHub CLI (`gh`) pre-inst
 creds
 ```
 
-This prompts for your 1Password service account token (hidden input), then resolves all `op://` references from `~/.config/aidev/credentials.env` into your shell environment:
+This prompts for your 1Password service account token (hidden input), then resolves all `op://` references from `~/.config/kra-ai-native/credentials.env` into your shell environment:
 
 - `GIT_AUTHOR_NAME` / `GIT_AUTHOR_EMAIL` → `git config --global user.name/email`
 - `GH_TOKEN` → `gh` CLI + `gh auth setup-git` (wires git HTTPS auth)
 - `GITLAB_TOKEN` → `glab` CLI + git credential helper (wires git HTTPS auth)
 - `OPENCODE_API_KEY` → OpenCode Zen inference
 
-The template at `~/.config/aidev/credentials.env` uses `op://DevContainer/...` references. Override the path with the `CREDS_TEMPLATE` environment variable if your vault or item names differ.
+The template at `~/.config/kra-ai-native/credentials.env` uses `op://DevContainer/...` references. Override the path with the `CREDS_TEMPLATE` environment variable if your vault or item names differ.
 
 ## Configuration
 
 | Environment variable | Default | Description |
 |----------------------|---------|-------------|
-| `AIDEV_IMAGE` | `aidev:latest` | Docker image name/tag to use |
-| `AIDEV_HOME` | `~/.local/share/aidev` | Directory where aidev stores its files |
+| `KRA_AI_NATIVE_IMAGE` | `kra-ai-native:latest` | Docker image name/tag to use |
+| `KRA_AI_NATIVE_HOME` | `~/.local/share/kra-ai-native` | Directory where kra-ai-native stores its files |
+| `KRA_AI_NATIVE_NO_BANNER` | unset | Set to any value to suppress the startup banner |
 
 ## Project structure
 
@@ -128,15 +139,18 @@ The template at `~/.config/aidev/credentials.env` uses `op://DevContainer/...` r
 .
 ├── Dockerfile          # Container definition
 ├── entrypoint.sh       # UID/GID remapping entrypoint
-├── aidev               # Launcher script
+├── kra-ai-native       # Launcher script
 ├── install.sh          # Host installation script
+├── bin/
+│   └── kra-ai-native.js  # npm launcher shim (sets KRA_AI_NATIVE_HOME, execs the bash script)
+├── package.json        # npm package manifest
 └── home/
     ├── .zshrc          # Zsh configuration
     ├── .config/
     │   ├── starship.toml
     │   ├── bat/
     │   ├── lazygit/
-    │   └── aidev/
+    │   └── kra-ai-native/
     └── nvim-overlay/   # AstroNvim plugin customisations
 ```
 

@@ -1,12 +1,12 @@
 #!/usr/bin/env zsh
-# aidev startup banner -- shown once per interactive shell session.
-# Disable with: export AIDEV_NO_BANNER=1
+# kra-ai-native startup banner -- shown once per interactive shell session.
+# Disable with: export KRA_AI_NATIVE_NO_BANNER=1
 
-[[ -n "$AIDEV_NO_BANNER" ]] && return 0
-[[ -n "$AIDEV_BANNER_SHOWN" ]] && return 0
+[[ -n "$KRA_AI_NATIVE_NO_BANNER" ]] && return 0
+[[ -n "$KRA_AI_NATIVE_BANNER_SHOWN" ]] && return 0
 # Skip the banner when running inside Neovim's :terminal / :! / toggleterm.
 [[ -n "$NVIM" || -n "$NVIM_LISTEN_ADDRESS" ]] && return 0
-export AIDEV_BANNER_SHOWN=1
+export KRA_AI_NATIVE_BANNER_SHOWN=1
 
 # Clear the screen before rendering for a clean stage on every launch.
 # Use ANSI escape directly so it works even when TERM is unset (e.g. some
