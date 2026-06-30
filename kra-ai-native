@@ -36,6 +36,17 @@ build_image() {
   docker build "$@" -t "$IMAGE_NAME" "$KRA_AI_NATIVE_HOME"
 }
 
+detect_host_tz() {
+  if [ -n "${TZ:-}" ]; then printf '%s' "$TZ"; return 0; fi
+  local link
+  link=$(readlink /etc/localtime 2>/dev/null || true)
+  case "$link" in
+    */zoneinfo/*) printf '%s' "${link##*/zoneinfo/}"; return 0;;
+  esac
+  [ -f /etc/timezone ] && { cat /etc/timezone; return 0; }
+  return 1
+}
+
 case "${1:-}" in
   -h|--help)
     usage
@@ -74,6 +85,11 @@ docker_args=(
   -v "$PWD:/workspace"
   -w /workspace
 )
+
+host_tz=$(detect_host_tz || true)
+if [ -n "$host_tz" ]; then
+  docker_args+=( -e "TZ=$host_tz" )
+fi
 
 if [ -t 0 ] && [ -t 1 ]; then
   docker_args+=( -it )

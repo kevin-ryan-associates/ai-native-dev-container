@@ -34,6 +34,7 @@ RUN apt-get update \
     locales \
     gosu \
     openssh-client \
+    tzdata \
   && rm -rf /var/lib/apt/lists/* \
   && ln -s /usr/bin/batcat /usr/local/bin/bat \
   && ln -s /usr/bin/fdfind /usr/local/bin/fd
