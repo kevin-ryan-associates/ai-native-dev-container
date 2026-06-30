@@ -144,6 +144,9 @@ RUN git clone https://github.com/AstroNvim/template /home/engineer/.config/nvim 
 # AstroNvim user overlay (custom plugin specs).
 COPY --chown=engineer:engineer home/nvim-overlay/lua/plugins/ /home/engineer/.config/nvim/lua/plugins/
 
+# Aerial treesitter queries (e.g. Dockerfile symbol outline).
+COPY --chown=engineer:engineer home/nvim-overlay/queries/ /home/engineer/.config/nvim/queries/
+
 # First sync: clone all plugins and run their build hooks (treesitter parsers etc.).
 RUN nvim --headless "+Lazy! sync" +qa 2>&1 | tail -n 30 \
   && nvim --headless "+MasonToolsInstall" "+sleep 120" +qa 2>&1 | tail -n 30 || true
