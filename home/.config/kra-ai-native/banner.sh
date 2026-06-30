@@ -36,12 +36,12 @@ local RST=$'\e[0m'
 
 # "KRA AI NATIVE" rendered in ANSI Shadow style, all in matrix green.
 print
-print "${C_GREEN}██╗  ██╗██████╗  █████╗ ${C_DIM}    ${C_GREEN} █████╗ ██╗${C_DIM}    ${C_GREEN}██╗  ███╗ █████╗ ███████╗██╗██╗   ██╗███████╗${RST}"
-print "${C_GREEN}██║ ██╔╝██╔══██╗██╔══██╗${C_DIM}    ${C_GREEN}██╔══██╗██║${C_DIM}    ${C_GREEN}██║ ██╔╝██╔══██╗╚═══██╔╝██║██║   ██║██╔════╝${RST}"
-print "${C_GREEN}█████╔╝ ██████╔╝███████║${C_DIM}    ${C_GREEN}███████║██║${C_DIM}    ${C_GREEN}█████╔╝ ███████║  ██║  ██║██║██║   ██║█████╗  ${RST}"
-print "${C_GREEN_D}██╔═██╗ ██╔══██╗██╔══██║${C_DIM}    ${C_GREEN_D}██╔══██║██║${C_DIM}    ${C_GREEN_D}██╔███╗ ██╔══██║  ██║  ██║██║╚██╗ ██╔╝██╔════╝${RST}"
-print "${C_GREEN_D}██║  ██╗██║  ██║██║  ██║${C_DIM}    ${C_GREEN_D}██║  ██║██║${C_DIM}    ${C_GREEN_D}██║╚██╗ ██║  ██║  ██║  ██║██║ ╚████╔╝ ███████╗${RST}"
-print "${C_DIM}╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝    ╚═╝  ╚═╝╚═╝    ╚═╝ ╚═╝╚═╝  ╚═╝  ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝${RST}"
+print "${C_GREEN}██╗  ██╗██████╗  █████╗ ${C_DIM}    ${C_GREEN} █████╗ ██╗${C_DIM}    ${C_GREEN}███╗   ██╗ █████╗ ████████╗██╗██╗   ██╗███████╗${RST}"
+print "${C_GREEN}██║ ██╔╝██╔══██╗██╔══██╗${C_DIM}    ${C_GREEN}██╔══██╗██║${C_DIM}    ${C_GREEN}████╗  ██║██╔══██╗╚══██╔══╝██║██║   ██║██╔════╝${RST}"
+print "${C_GREEN}█████╔╝ ██████╔╝███████║${C_DIM}    ${C_GREEN}███████║██║${C_DIM}    ${C_GREEN}██╔██╗ ██║███████║   ██║   ██║██║   ██║█████╗  ${RST}"
+print "${C_GREEN_D}██╔═██╗ ██╔══██╗██╔══██║${C_DIM}    ${C_GREEN_D}██╔══██║██║${C_DIM}    ${C_GREEN_D}██║╚██╗██║██╔══██║   ██║   ██║╚██╗ ██╔╝██╔══╝  ${RST}"
+print "${C_GREEN_D}██║  ██╗██║  ██║██║  ██║${C_DIM}    ${C_GREEN_D}██║  ██║██║${C_DIM}    ${C_GREEN_D}██║ ╚████║██║  ██║   ██║   ██║ ╚████╔╝ ███████╗${RST}"
+print "${C_DIM}╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝    ╚═╝  ╚═╝╚═╝    ╚═╝  ╚═══╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═══╝  ╚══════╝${RST}"
 print
 
 # Sub-banner: tools / versions
@@ -51,5 +51,5 @@ local node_v=$(node -v 2>/dev/null)
 local py_v=$(python3 -V 2>/dev/null | awk '{print $2}')
 
 print "  ${BOLD}${C_GREEN}»${RST} ${C_TEXT}nvim${RST} ${C_DIM}${nvim_v}${RST}   ${BOLD}${C_GREEN}»${RST} ${C_TEXT}zsh${RST} ${C_DIM}${zsh_v}${RST}   ${BOLD}${C_GREEN}»${RST} ${C_TEXT}node${RST} ${C_DIM}${node_v}${RST}   ${BOLD}${C_GREEN}»${RST} ${C_TEXT}python${RST} ${C_DIM}${py_v}${RST}"
-print "  ${DIM}${C_DIM}// ai-native dev environment${RST}"
+print "  ${DIM}${C_DIM}// ai-native environment${RST}"
 print
