@@ -48,8 +48,9 @@ if [ "$NEED_CHOWN" = "1" ]; then
 fi
 
 # Docker-in-Docker: start the daemon as root, then drop to the dev user.
-# Try the fast overlay2 driver first; fall back to vfs where overlay2 is
-# unavailable (e.g. Docker Desktop for macOS nested containers).
+# Detect overlay support upfront so we pick the right storage driver in a
+# single attempt, avoiding a doomed overlay2 start (and a scary fallback
+# message) on Docker Desktop for macOS nested containers.
 gpasswd -a "$USER_NAME" docker >/dev/null 2>&1 || true
 
 start_dockerd() {
@@ -66,18 +67,27 @@ wait_dockerd() {
   return 1
 }
 
-start_dockerd --storage-driver=overlay2
+can_overlay() {
+  local lower upper work merged
+  lower=$(mktemp -d) upper=$(mktemp -d) work=$(mktemp -d) merged=$(mktemp -d)
+  mount -t overlay overlay -o "lowerdir=$lower,upperdir=$upper,workdir=$work" "$merged" 2>/dev/null
+  local rc=$?
+  umount "$merged" 2>/dev/null || true
+  rmdir "$lower" "$upper" "$work" "$merged" 2>/dev/null || true
+  return $rc
+}
+
+if can_overlay; then
+  storage_driver=overlay2
+else
+  storage_driver=vfs
+fi
+
+start_dockerd --storage-driver="$storage_driver"
 if ! wait_dockerd; then
-  echo "overlay2 unavailable, falling back to vfs storage driver" >&2
-  kill "$DOCKER_PID" 2>/dev/null || true
-  wait "$DOCKER_PID" 2>/dev/null || true
-  rm -rf /var/lib/docker/*
-  start_dockerd --storage-driver=vfs
-  if ! wait_dockerd; then
-    echo "dockerd did not become ready:" >&2
-    cat /var/log/dockerd.log >&2
-    exit 1
-  fi
+  echo "dockerd did not become ready (storage driver: $storage_driver):" >&2
+  cat /var/log/dockerd.log >&2
+  exit 1
 fi
 
 if [ "$#" -eq 0 ]; then
