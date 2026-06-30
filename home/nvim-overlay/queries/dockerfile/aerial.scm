@@ -4,7 +4,7 @@
 ; Build stages: FROM <image> [AS <alias>]
 (from_instruction
   (image_spec
-    (image_name) @name)
+    name: (image_name) @name)
   (#set! "kind" "Module")) @symbol
 
 ; RUN -- first shell fragment as name
@@ -30,22 +30,16 @@
 ; ENV -- first pair key as name
 (env_instruction
   (env_pair
-    (string) @name)
+    name: (unquoted_string) @name)
   (#set! "kind" "Method")) @symbol
 
-; ARG -- unquoted string as name
+; ARG -- name field
 (arg_instruction
-  (unquoted_string) @name
+  name: (unquoted_string) @name
   (#set! "kind" "Method")) @symbol
 
-; Remaining instructions -- node text as name
-(cmd_instruction          (#set! "kind" "Method")) @symbol
-(entrypoint_instruction   (#set! "kind" "Method")) @symbol
-(expose_instruction       (#set! "kind" "Method")) @symbol
-(label_instruction        (#set! "kind" "Method")) @symbol
-(healthcheck_instruction  (#set! "kind" "Method")) @symbol
-(shell_instruction        (#set! "kind" "Method")) @symbol
-(user_instruction         (#set! "kind" "Method")) @symbol
-(volume_instruction       (#set! "kind" "Method")) @symbol
-(onbuild_instruction      (#set! "kind" "Method")) @symbol
-(maintainer_instruction   (#set! "kind" "Method")) @symbol
+; LABEL -- key field
+(label_instruction
+  (label_pair
+    key: [(double_quoted_string) (single_quoted_string) (unquoted_string)] @name)
+  (#set! "kind" "Method")) @symbol
