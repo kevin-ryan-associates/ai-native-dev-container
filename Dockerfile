@@ -164,6 +164,7 @@ COPY --chown=dev:dev home/.config/starship.toml /home/dev/.config/starship.toml
 COPY --chown=dev:dev home/.config/bat /home/dev/.config/bat
 COPY --chown=dev:dev home/.config/lazygit /home/dev/.config/lazygit
 COPY --chown=dev:dev home/.config/aidev /home/dev/.config/aidev
+COPY --chown=dev:dev home/.config/opencode /home/dev/.config/opencode
 
 # Pre-install zinit and plugins so first shell launch is instant.
 # .zshrc bootstraps zinit on first run; we trigger it twice (first run clones
