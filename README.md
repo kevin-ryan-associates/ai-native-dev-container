@@ -39,7 +39,24 @@ The container is built on Ubuntu 24.04 and includes:
 npm install -g kra-ai-native
 ```
 
-This installs the `kra-ai-native` command globally. The bundled `Dockerfile` and config overlay are referenced in-place from `node_modules`, so `npm update -g kra-ai-native` refreshes them automatically. Run `kra-ai-native update` afterwards to rebuild the image against the new files.
+This installs the `kra-ai-native` command globally. The bundled `Dockerfile` and config overlay are referenced in-place from `node_modules`, so `npm update -g kra-ai-native` refreshes them automatically — but it does **not** rebuild the Docker image. The launcher only builds the image if `kra-ai-native:latest` is missing, so an existing image keeps running until you explicitly rebuild it.
+
+### Updating
+
+After upgrading the package (either path), rebuild the image to pick up the new files:
+
+```bash
+kra-ai-native update     # rebuild with --pull (refreshes base images too)
+```
+
+Or, for a clean rebuild from scratch:
+
+```bash
+docker rmi kra-ai-native:latest
+kra-ai-native build
+```
+
+The image is ~2.5 GB; a rebuild takes a few minutes. Once rebuilt, new launches use the updated image automatically.
 
 ### curl
 

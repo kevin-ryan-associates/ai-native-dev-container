@@ -15,6 +15,11 @@ Usage:
   kra-ai-native shell      Launch zsh in current directory
   kra-ai-native [--build] <tool> [args...]
 
+The image is built lazily on first run, then reused. After upgrading the
+package (npm update -g / reinstall), run 'kra-ai-native update' to rebuild
+the image against the new files -- an existing kra-ai-native:latest is kept
+otherwise.
+
 Examples:
   kra-ai-native
   kra-ai-native nvim .
