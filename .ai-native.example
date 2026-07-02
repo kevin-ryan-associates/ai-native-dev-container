@@ -1,0 +1,13 @@
+# .ai-native - project-local config for kra-ai-native
+# Place this in your project root (or any parent directory). The launcher
+# walks up from the current directory and uses the first .ai-native found.
+# Format: key=value, one per line. Lines starting with # are ignored.
+
+# Forward a port range to the host (e.g. 3000-3005).
+# Keep ranges small — very large ranges (e.g. 3000-3999) can make the
+# container hang on startup while Docker binds every port.
+port_range=3000-3005
+
+# Add explicit ports (comma-separated). Specs without a ":" map to the same
+# host and container port on 0.0.0.0.
+# ports=5000,8080:8080,127.0.0.1:5432:5432

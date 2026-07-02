@@ -17,15 +17,22 @@ Usage:
 
 Port forwarding:
   -p, --port SPEC          Publish a port (e.g. 3000, 8080:8080,
-                           127.0.0.1:5432:5432). Repeatable; additive to
-                           the default range.
-      --port-range RANGE   Override the default forwarded range (e.g. 3000-3999).
+                           127.0.0.1:5432:5432). Repeatable; additive.
+      --port-range RANGE   Override the config/env/default forwarded range
+                           (e.g. 3000-3999).
 
-By default ports 3000-3999 are published on 0.0.0.0, so any process inside
-the container (including docker-in-docker services) listening on a port in
-that range is reachable on the host at the same port. Disable with
-KRA_AI_NATIVE_NO_PORTS=1 or KRA_AI_NATIVE_PORT_RANGE=none, or add explicit
-ports via KRA_AI_NATIVE_PORTS=3000,8080:8080.
+Project config:
+  A .ai-native file (key=value) in the project root or any parent directory
+  can set project-local defaults. Walks up from the current directory.
+    port_range=RANGE       Forward a port range (e.g. 3000-3005).
+    ports=SPEC1,SPEC2      Comma-separated explicit ports.
+
+By default no ports are published unless a .ai-native file, env var, or
+CLI flag configures them. Disable the automatic range with:
+  KRA_AI_NATIVE_NO_PORTS=1
+  KRA_AI_NATIVE_PORT_RANGE=none
+Add explicit ports with:
+  KRA_AI_NATIVE_PORTS=3000,8080:8080
 
 The image is built lazily on first run, then reused. After upgrading the
 package (npm update -g / reinstall), run 'kra-ai-native update' to rebuild
@@ -59,6 +66,36 @@ detect_host_tz() {
   esac
   [ -f /etc/timezone ] && { cat /etc/timezone; return 0; }
   return 1
+}
+
+# Load project-local .ai-native config (key=value) by walking up from $PWD.
+# Supports: port_range, ports.
+load_config() {
+  local dir="$PWD"
+  while [ -n "$dir" ] && [ "$dir" != "/" ]; do
+    if [ -r "$dir/.ai-native" ]; then
+      while IFS= read -r line || [ -n "$line" ]; do
+        case "$line" in
+          ''|\#*) continue ;;
+        esac
+        local key val
+        key="${line%%=*}"
+        val="${line#*=}"
+        [ "$key" = "$line" ] && continue
+        # trim leading/trailing whitespace
+        key="${key#"${key%%[![:space:]]*}"}"
+        key="${key%"${key##*[![:space:]]}"}"
+        val="${val#"${val%%[![:space:]]*}"}"
+        val="${val%"${val##*[![:space:]]}"}"
+        case "$key" in
+          port_range) cfg_port_range="$val" ;;
+          ports)      cfg_ports="$val" ;;
+        esac
+      done < "$dir/.ai-native"
+      break
+    fi
+    dir="${dir%/*}"
+  done
 }
 
 # Strip port-forwarding flags off the front of $@ before command dispatch,
@@ -117,6 +154,10 @@ if ! docker image inspect "$IMAGE_NAME" >/dev/null 2>&1; then
   build_image
 fi
 
+cfg_port_range=""
+cfg_ports=""
+load_config
+
 docker_args=(
   --rm
   --privileged
@@ -126,22 +167,23 @@ docker_args=(
   -w /workspace
 )
 
-# Port forwarding to the host. By default the range 3000-3999 is published
-# on 0.0.0.0, so any process inside the container -- including inner
-# docker-in-docker services that publish a port in the range -- is
-# immediately reachable on the host at the same port. Override the range
-# with --port-range or KRA_AI_NATIVE_PORT_RANGE; disable with
-# KRA_AI_NATIVE_NO_PORTS=1 or KRA_AI_NATIVE_PORT_RANGE=none.
-range="${KRA_AI_NATIVE_PORT_RANGE:-3000-3999}"
+# Port forwarding to the host. By default no ports are published.
+# Forwarding is opt-in via .ai-native config, env vars, or CLI flags.
+# Override the range with --port-range or KRA_AI_NATIVE_PORT_RANGE;
+# disable with KRA_AI_NATIVE_NO_PORTS=1 or KRA_AI_NATIVE_PORT_RANGE=none.
+# Precedence: CLI > env > .ai-native config > default (none).
+range="${KRA_AI_NATIVE_PORT_RANGE:-${cfg_port_range}}"
 [ -n "$cli_range" ] && range="$cli_range"
-if [ "${KRA_AI_NATIVE_NO_PORTS:-0}" != "1" ] && [ "$range" != "none" ]; then
+if [ "${KRA_AI_NATIVE_NO_PORTS:-0}" != "1" ] && [ "$range" != "none" ] && [ -n "$range" ]; then
   docker_args+=( -p "${range}:${range}" )
 fi
 
 # Explicit comma-separated ports, e.g. KRA_AI_NATIVE_PORTS=3000,8080:8080.
 # Specs without a ":" are expanded to PORT:PORT (0.0.0.0).
-if [ -n "${KRA_AI_NATIVE_PORTS:-}" ]; then
-  IFS=',' read -ra _ports <<< "$KRA_AI_NATIVE_PORTS"
+# Precedence: env > .ai-native config.
+_ports_env_or_cfg="${KRA_AI_NATIVE_PORTS:-${cfg_ports}}"
+if [ -n "$_ports_env_or_cfg" ]; then
+  IFS=',' read -ra _ports <<< "$_ports_env_or_cfg"
   for _p in "${_ports[@]}"; do
     [ -z "$_p" ] && continue
     case "$_p" in
