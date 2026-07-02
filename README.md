@@ -105,6 +105,56 @@ docker compose up
 
 The inner Docker image and build cache are **ephemeral** — they live in the container's writable layer and are discarded when the `--rm` container exits, so base images are re-pulled each session.
 
+### Port forwarding
+
+By default, `kra-ai-native` publishes the port range **3000-3999** on `0.0.0.0`, so any process inside the container that listens on a port in that range is immediately reachable on the host at the same port — no per-port setup, no restart. This is the closest equivalent to VS Code's auto port forwarding available to a standalone Docker launcher.
+
+```bash
+# Inside the container:
+python3 -m http.server 3005
+# On the host (another terminal):
+curl localhost:3005   # works
+```
+
+**Docker-in-Docker chaining:** the inner `dockerd` runs in the container's network namespace, so a service started with inner `docker compose` (or `docker run -p`) that publishes a port inside 3000-3999 is *also* forwarded to the host automatically. Ports outside the range are only forwarded if published explicitly.
+
+```bash
+# Inside the container — forwarded because 3000 is in the default range:
+docker run --rm -p 3000:3000 nginx
+# On the host:
+curl localhost:3000   # works
+```
+
+Override or disable the default range:
+
+```bash
+# Forward a different range
+kra-ai-native --port-range 5000-5999
+# Or via env var
+KRA_AI_NATIVE_PORT_RANGE=5000-5999 kra-ai-native
+
+# Add an explicit port (additive to the range; repeatable)
+kra-ai-native -p 5432:5432
+kra-ai-native -p 5432:5432 -p 8080 nvim .
+
+# Disable forwarding entirely
+KRA_AI_NATIVE_NO_PORTS=1 kra-ai-native
+KRA_AI_NATIVE_PORT_RANGE=none kra-ai-native
+
+# Bind a single port to localhost only (overrides the 0.0.0.0 default)
+kra-ai-native -p 127.0.0.1:5432:5432
+```
+
+| Flag / variable | Effect |
+|-----------------|--------|
+| `-p`, `--port SPEC` | Publish one port (`3000`, `8080:8080`, `127.0.0.1:5432:5432`). Repeatable. |
+| `--port-range RANGE` | Override the default range (e.g. `3000-3999`). |
+| `KRA_AI_NATIVE_PORT_RANGE` | Default `3000-3999`; set to `none` to disable. |
+| `KRA_AI_NATIVE_PORTS` | Comma-separated explicit ports, e.g. `3000,8080:8080`. |
+| `KRA_AI_NATIVE_NO_PORTS` | Set to `1` to disable all forwarding (including the default range). |
+
+> **Why not `--network host`?** On Linux it would forward *every* port automatically, but on Docker Desktop for macOS/Windows the container runs in a Linux VM, so `--network host` binds to the VM — ports are **not** reachable on the Mac. Publishing a range is the reliable cross-platform approach.
+
 ### UID/GID passthrough
 
 The entrypoint automatically remaps the `engineer` user inside the container to match your host UID/GID (`HOST_UID` / `HOST_GID`), so files created in `/workspace` are owned by you on the host.
@@ -149,6 +199,9 @@ The template at `~/.config/kra-ai-native/credentials.env` uses `op://DevContaine
 | `KRA_AI_NATIVE_IMAGE` | `kra-ai-native:latest` | Docker image name/tag to use |
 | `KRA_AI_NATIVE_HOME` | `~/.local/share/kra-ai-native` | Directory where kra-ai-native stores its files |
 | `KRA_AI_NATIVE_NO_BANNER` | unset | Set to any value to suppress the startup banner |
+| `KRA_AI_NATIVE_PORT_RANGE` | `3000-3999` | Host-published port range; set to `none` to disable |
+| `KRA_AI_NATIVE_PORTS` | unset | Comma-separated explicit ports to publish, e.g. `3000,8080:8080` |
+| `KRA_AI_NATIVE_NO_PORTS` | unset | Set to `1` to disable all port forwarding |
 
 ## Project structure
 
