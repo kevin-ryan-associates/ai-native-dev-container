@@ -48,9 +48,9 @@ if [ "$NEED_CHOWN" = "1" ]; then
 fi
 
 # Docker-in-Docker: start the daemon as root, then drop to the engineer user.
-# Pick the best storage driver in a single attempt: kernel overlay2 when the
-# container can mount it, else fuse-overlayfs (copy-on-write via FUSE) on
-# Docker Desktop for macOS nested containers, else vfs as the final fallback.
+# Detect overlay support upfront so we pick the right storage driver in a
+# single attempt, avoiding a doomed overlay2 start (and a scary fallback
+# message) on Docker Desktop for macOS nested containers.
 gpasswd -a "$USER_NAME" docker >/dev/null 2>&1 || true
 
 start_dockerd() {
@@ -79,8 +79,6 @@ can_overlay() {
 
 if can_overlay; then
   storage_driver=overlay2
-elif command -v fuse-overlayfs >/dev/null 2>&1 && [ -e /dev/fuse ]; then
-  storage_driver=fuse-overlayfs
 else
   storage_driver=vfs
 fi
