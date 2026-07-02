@@ -181,6 +181,15 @@ COPY entrypoint.sh /usr/local/bin/entrypoint
 RUN chmod +x /usr/local/bin/entrypoint \
   && chown -R 1000:1000 /home/engineer
 
+# fuse-overlayfs: copy-on-write storage driver for the inner dockerd when
+# kernel overlay2 is unavailable (Docker Desktop for Mac nested containers).
+# Static binary from upstream releases (no libfuse3 runtime dependency).
+ENV FUSE_OVERLAYFS_VERSION=1.17
+RUN curl -fsSL -o /usr/local/bin/fuse-overlayfs \
+    "https://github.com/containers/fuse-overlayfs/releases/download/v${FUSE_OVERLAYFS_VERSION}/fuse-overlayfs-x86_64" \
+  && chmod +x /usr/local/bin/fuse-overlayfs \
+  && command -v fuse-overlayfs >/dev/null
+
 WORKDIR /workspace
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
 CMD ["zsh"]
