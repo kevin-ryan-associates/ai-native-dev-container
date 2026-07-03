@@ -1,0 +1,17 @@
+{
+  "name": "ai-native-dev-container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "USERNAME": "engineer",
+      "USER_UID": "1000",
+      "USER_GID": "1000"
+    }
+  },
+  "remoteUser": "engineer",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/workspace",
+  "containerEnv": {
+    "LANG": "C.UTF-8"
+  }
+}
