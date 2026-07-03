@@ -1,5 +1,5 @@
 # ============================================================================
-# kra-ai-native .zshrc -- a snappy, demo-friendly zsh
+# ainative .zshrc -- a snappy, demo-friendly zsh
 # ============================================================================
 
 # ---- History --------------------------------------------------------------
@@ -119,11 +119,11 @@ export PAGER=less
 export LESS='-R --use-color -Dd+r$Du+b'
 
 # ---- Banner ---------------------------------------------------------------
-if [[ -o interactive && -f "$HOME/.config/kra-ai-native/banner.sh" ]]; then
-  source "$HOME/.config/kra-ai-native/banner.sh"
+if [[ -o interactive && -f "$HOME/.config/ainative/banner.sh" ]]; then
+  source "$HOME/.config/ainative/banner.sh"
 fi
 
 # ---- creds (1Password secret loader) --------------------------------------
-if [[ -f "$HOME/.config/kra-ai-native/creds.zsh" ]]; then
-  source "$HOME/.config/kra-ai-native/creds.zsh"
+if [[ -f "$HOME/.config/ainative/creds.zsh" ]]; then
+  source "$HOME/.config/ainative/creds.zsh"
 fi

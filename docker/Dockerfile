@@ -167,7 +167,7 @@ COPY --chown=engineer:engineer home/.zshrc /home/engineer/.zshrc
 COPY --chown=engineer:engineer home/.config/starship.toml /home/engineer/.config/starship.toml
 COPY --chown=engineer:engineer home/.config/bat /home/engineer/.config/bat
 COPY --chown=engineer:engineer home/.config/lazygit /home/engineer/.config/lazygit
-COPY --chown=engineer:engineer home/.config/kra-ai-native /home/engineer/.config/kra-ai-native
+COPY --chown=engineer:engineer home/.config/ainative /home/engineer/.config/ainative
 COPY --chown=engineer:engineer home/.config/opencode /home/engineer/.config/opencode
 
 # Pre-install zinit and plugins so first shell launch is instant.

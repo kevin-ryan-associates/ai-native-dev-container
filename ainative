@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-command -v docker >/dev/null 2>&1 || { echo "kra-ai-native: docker not found on PATH" >&2; exit 1; }
+command -v docker >/dev/null 2>&1 || { echo "ainative: docker not found on PATH" >&2; exit 1; }
 
-IMAGE_NAME=${KRA_AI_NATIVE_IMAGE:-kra-ai-native:latest}
-KRA_AI_NATIVE_HOME=${KRA_AI_NATIVE_HOME:-$HOME/.local/share/kra-ai-native}
+IMAGE_NAME=${AINATIVE_IMAGE:-ainative:latest}
+AINATIVE_HOME=${AINATIVE_HOME:-$HOME/.local/share/ainative}
 
 usage() {
   cat <<EOF
 Usage:
-  kra-ai-native            Launch zsh in current directory (default)
-  kra-ai-native build      Build the image from $KRA_AI_NATIVE_HOME
-  kra-ai-native update     Rebuild the image with --pull (refresh bases)
-  kra-ai-native shell      Launch zsh in current directory
-  kra-ai-native [--build] [--port SPEC|--port-range RANGE] <tool> [args...]
+  ainative               Launch zsh in current directory (default)
+  ainative build         Build the image from \$AINATIVE_HOME/docker
+  ainative update        Rebuild the image with --pull (refresh bases)
+  ainative shell         Launch zsh in current directory
+  ainative [--build] [--port SPEC|--port-range RANGE] <tool> [args...]
 
 Port forwarding:
   -p, --port SPEC          Publish a port (e.g. 3000, 8080:8080,
                            127.0.0.1:5432:5432). Repeatable; additive.
-      --port-range RANGE   Override the config/env/default forwarded range
+       --port-range RANGE   Override the config/env/default forwarded range
                            (e.g. 3000-3999).
 
 Project config:
@@ -29,32 +29,33 @@ Project config:
 
 By default no ports are published unless a .ai-native file, env var, or
 CLI flag configures them. Disable the automatic range with:
-  KRA_AI_NATIVE_NO_PORTS=1
-  KRA_AI_NATIVE_PORT_RANGE=none
+  AINATIVE_NO_PORTS=1
+  AINATIVE_PORT_RANGE=none
 Add explicit ports with:
-  KRA_AI_NATIVE_PORTS=3000,8080:8080
+  AINATIVE_PORTS=3000,8080:8080
 
 The image is built lazily on first run, then reused. After upgrading the
-package (npm update -g / reinstall), run 'kra-ai-native update' to rebuild
-the image against the new files -- an existing kra-ai-native:latest is kept
+package (npm update -g / reinstall), run 'ainative update' to rebuild
+the image against the new files -- an existing ainative:latest is kept
 otherwise.
 
 Examples:
-  kra-ai-native
-  kra-ai-native nvim .
-  kra-ai-native shell
-  kra-ai-native --build nvim .
-  kra-ai-native -p 5000 nvim .
-  KRA_AI_NATIVE_NO_PORTS=1 kra-ai-native
+  ainative
+  ainative nvim .
+  ainative shell
+  ainative --build nvim .
+  ainative -p 5000 nvim .
+  AINATIVE_NO_PORTS=1 ainative
 EOF
 }
 
 build_image() {
-  if [ ! -f "$KRA_AI_NATIVE_HOME/Dockerfile" ]; then
-    echo "Missing Dockerfile in $KRA_AI_NATIVE_HOME. Run install.sh from the repo first." >&2
+  local ctx="$AINATIVE_HOME/docker"
+  if [ ! -f "$ctx/Dockerfile" ]; then
+    echo "Missing Dockerfile in $ctx. Run install.sh from the repo first." >&2
     exit 1
   fi
-  docker build "$@" -t "$IMAGE_NAME" "$KRA_AI_NATIVE_HOME"
+  docker build "$@" -t "$IMAGE_NAME" "$ctx"
 }
 
 detect_host_tz() {
@@ -99,15 +100,15 @@ load_config() {
 }
 
 # Strip port-forwarding flags off the front of $@ before command dispatch,
-# so e.g. "kra-ai-native -p 3000 nvim ." still selects `nvim` as the tool.
+# so e.g. "ainative -p 3000 nvim ." still selects `nvim` as the tool.
 port_args=()
 cli_range=""
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --port|-p)
-      [ "$#" -lt 2 ] && { echo "kra-ai-native: $1 requires a port spec" >&2; exit 2; }
+      [ "$#" -lt 2 ] && { echo "ainative: $1 requires a port spec" >&2; exit 2; }
       # A bare port (no ":") maps host:container at the same port, so
-      # `kra-ai-native -p 5000` forwards host:5000 -> container:5000
+      # `ainative -p 5000` forwards host:5000 -> container:5000
       # rather than docker's default of a random host port.
       case "$2" in
         *:*) port_args+=( -p "$2" ) ;;
@@ -115,7 +116,7 @@ while [ "$#" -gt 0 ]; do
       esac
       shift 2 ;;
     --port-range)
-      [ "$#" -lt 2 ] && { echo "kra-ai-native: $1 requires a range spec" >&2; exit 2; }
+      [ "$#" -lt 2 ] && { echo "ainative: $1 requires a range spec" >&2; exit 2; }
       cli_range="$2"; shift 2 ;;
     --)
       shift; break ;;
@@ -169,19 +170,19 @@ docker_args=(
 
 # Port forwarding to the host. By default no ports are published.
 # Forwarding is opt-in via .ai-native config, env vars, or CLI flags.
-# Override the range with --port-range or KRA_AI_NATIVE_PORT_RANGE;
-# disable with KRA_AI_NATIVE_NO_PORTS=1 or KRA_AI_NATIVE_PORT_RANGE=none.
+# Override the range with --port-range or AINATIVE_PORT_RANGE;
+# disable with AINATIVE_NO_PORTS=1 or AINATIVE_PORT_RANGE=none.
 # Precedence: CLI > env > .ai-native config > default (none).
-range="${KRA_AI_NATIVE_PORT_RANGE:-${cfg_port_range}}"
+range="${AINATIVE_PORT_RANGE:-${cfg_port_range}}"
 [ -n "$cli_range" ] && range="$cli_range"
-if [ "${KRA_AI_NATIVE_NO_PORTS:-0}" != "1" ] && [ "$range" != "none" ] && [ -n "$range" ]; then
+if [ "${AINATIVE_NO_PORTS:-0}" != "1" ] && [ "$range" != "none" ] && [ -n "$range" ]; then
   docker_args+=( -p "${range}:${range}" )
 fi
 
-# Explicit comma-separated ports, e.g. KRA_AI_NATIVE_PORTS=3000,8080:8080.
+# Explicit comma-separated ports, e.g. AINATIVE_PORTS=3000,8080:8080.
 # Specs without a ":" are expanded to PORT:PORT (0.0.0.0).
 # Precedence: env > .ai-native config.
-_ports_env_or_cfg="${KRA_AI_NATIVE_PORTS:-${cfg_ports}}"
+_ports_env_or_cfg="${AINATIVE_PORTS:-${cfg_ports}}"
 if [ -n "$_ports_env_or_cfg" ]; then
   IFS=',' read -ra _ports <<< "$_ports_env_or_cfg"
   for _p in "${_ports[@]}"; do

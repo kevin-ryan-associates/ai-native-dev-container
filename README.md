@@ -36,24 +36,24 @@ The container is built on Ubuntu 24.04 and includes:
 ### npm (recommended)
 
 ```bash
-npm install -g kra-ai-native
+npm install -g ainative
 ```
 
-This installs the `kra-ai-native` command globally. The bundled `Dockerfile` and config overlay are referenced in-place from `node_modules`, so `npm update -g kra-ai-native` refreshes them automatically — but it does **not** rebuild the Docker image. The launcher only builds the image if `kra-ai-native:latest` is missing, so an existing image keeps running until you explicitly rebuild it.
+This installs the `ainative` command globally. The bundled `Dockerfile` and config overlay are referenced in-place from `node_modules`, so `npm update -g ainative` refreshes them automatically — but it does **not** rebuild the Docker image. The launcher only builds the image if `ainative:latest` is missing, so an existing image keeps running until you explicitly rebuild it.
 
 ### Updating
 
 After upgrading the package (either path), rebuild the image to pick up the new files:
 
 ```bash
-kra-ai-native update     # rebuild with --pull (refreshes base images too)
+ainative update     # rebuild with --pull (refreshes base images too)
 ```
 
 Or, for a clean rebuild from scratch:
 
 ```bash
-docker rmi kra-ai-native:latest
-kra-ai-native build
+docker rmi ainative:latest
+ainative build
 ```
 
 The image is ~2.5 GB; a rebuild takes a few minutes. Once rebuilt, new launches use the updated image automatically.
@@ -72,29 +72,29 @@ cd ai-native-dev-container
 bash install.sh
 ```
 
-`install.sh` copies the project files to `~/.local/share/kra-ai-native` and installs the `kra-ai-native` command to `/usr/local/bin` (or `~/.local/bin` if you don't have write access to `/usr/local/bin`). Existing `devenv` and `aidev` installs are migrated automatically.
+`install.sh` copies the project files to `~/.local/share/ainative` and installs the `ainative` command to `/usr/local/bin` (or `~/.local/bin` if you don't have write access to `/usr/local/bin`). Existing `devenv`, `aidev`, and `kra-ai-native` installs are migrated automatically.
 
 ## Usage
 
 ```bash
 # Launch an interactive zsh shell in the current directory
-kra-ai-native
+ainative
 
 # Open the current directory in Neovim
-kra-ai-native nvim .
+ainative nvim .
 
 # Build (or rebuild) the Docker image explicitly
-kra-ai-native build
+ainative build
 
 # Rebuild with refreshed base images
-kra-ai-native update
+ainative update
 ```
 
 The container mounts `$PWD` to `/workspace`. No host credentials (git config, SSH keys, or API tokens) are forwarded — secrets are sourced from 1Password via the pre-installed `op` CLI inside the container.
 
 ### Docker (Docker-in-Docker)
 
-The container ships with a full Docker Engine (plus `buildx` and `compose` v2 plugins). The inner `dockerd` is started automatically by the entrypoint on launch, so `docker`, `docker buildx`, and `docker compose` are ready immediately. `kra-ai-native` runs the container with `--privileged`, which the daemon requires.
+The container ships with a full Docker Engine (plus `buildx` and `compose` v2 plugins). The inner `dockerd` is started automatically by the entrypoint on launch, so `docker`, `docker buildx`, and `docker compose` are ready immediately. `ainative` runs the container with `--privileged`, which the daemon requires.
 
 ```bash
 docker info
@@ -107,7 +107,7 @@ The inner Docker image and build cache are **ephemeral** — they live in the co
 
 ### Port forwarding
 
-By default, `kra-ai-native` publishes **no ports**. Forwarding is opt-in via a project `.ai-native` file, environment variables, or CLI flags.
+By default, `ainative` publishes **no ports**. Forwarding is opt-in via a project `.ai-native` file, environment variables, or CLI flags.
 
 Create a `.ai-native` file in your project root (or any parent directory — the launcher walks up from `$PWD`):
 
@@ -137,20 +137,20 @@ Override or disable forwarding:
 
 ```bash
 # Forward a different range via CLI
-kra-ai-native --port-range 5000-5999
+ainative --port-range 5000-5999
 # Or via env var
-KRA_AI_NATIVE_PORT_RANGE=5000-5999 kra-ai-native
+AINATIVE_PORT_RANGE=5000-5999 ainative
 
 # Add an explicit port (additive; repeatable)
-kra-ai-native -p 5432:5432
-kra-ai-native -p 5432:5432 -p 8080 nvim .
+ainative -p 5432:5432
+ainative -p 5432:5432 -p 8080 nvim .
 
 # Disable the automatic range (explicit -p still works)
-KRA_AI_NATIVE_NO_PORTS=1 kra-ai-native
-KRA_AI_NATIVE_PORT_RANGE=none kra-ai-native
+AINATIVE_NO_PORTS=1 ainative
+AINATIVE_PORT_RANGE=none ainative
 
 # Bind a single port to localhost only
-kra-ai-native -p 127.0.0.1:5432:5432
+ainative -p 127.0.0.1:5432:5432
 ```
 
 | Flag / variable | Effect |
@@ -158,9 +158,9 @@ kra-ai-native -p 127.0.0.1:5432:5432
 | `.ai-native` keys | `port_range=RANGE` / `ports=SPEC1,SPEC2` — project-local defaults. |
 | `-p`, `--port SPEC` | Publish one port (`3000`, `8080:8080`, `127.0.0.1:5432:5432`). Repeatable. |
 | `--port-range RANGE` | Override the configured/default range. |
-| `KRA_AI_NATIVE_PORT_RANGE` | Default from config or none; set to `none` to disable. |
-| `KRA_AI_NATIVE_PORTS` | Comma-separated explicit ports, e.g. `3000,8080:8080`. |
-| `KRA_AI_NATIVE_NO_PORTS` | Set to `1` to disable the automatic range (explicit ports still work). |
+| `AINATIVE_PORT_RANGE` | Default from config or none; set to `none` to disable. |
+| `AINATIVE_PORTS` | Comma-separated explicit ports, e.g. `3000,8080:8080`. |
+| `AINATIVE_NO_PORTS` | Set to `1` to disable the automatic range (explicit ports still work). |
 
 > **Warning:** Publishing a very large range (e.g. `3000-3999` = 1000 ports) can make the container appear to hang on startup because Docker binds every port and spawns a proxy process for each one before the entrypoint runs. Keep ranges small.
 
@@ -194,45 +194,50 @@ The container ships with the 1Password CLI (`op`) and GitHub CLI (`gh`) pre-inst
 creds
 ```
 
-This prompts for your 1Password service account token (hidden input), then resolves all `op://` references from `~/.config/kra-ai-native/credentials.env` into your shell environment:
+This prompts for your 1Password service account token (hidden input), then resolves all `op://` references from `~/.config/ainative/credentials.env` into your shell environment:
 
 - `GIT_AUTHOR_NAME` / `GIT_AUTHOR_EMAIL` → `git config --global user.name/email`
 - `GH_TOKEN` → `gh` CLI + `gh auth setup-git` (wires git HTTPS auth)
 - `GITLAB_TOKEN` → `glab` CLI + git credential helper (wires git HTTPS auth)
 - `OPENCODE_API_KEY` → OpenCode Zen inference
 
-The template at `~/.config/kra-ai-native/credentials.env` uses `op://DevContainer/...` references. Override the path with the `CREDS_TEMPLATE` environment variable if your vault or item names differ.
+The template at `~/.config/ainative/credentials.env` uses `op://DevContainer/...` references. Override the path with the `CREDS_TEMPLATE` environment variable if your vault or item names differ.
 
 ## Configuration
 
 | Environment variable | Default | Description |
 |----------------------|---------|-------------|
-| `KRA_AI_NATIVE_IMAGE` | `kra-ai-native:latest` | Docker image name/tag to use |
-| `KRA_AI_NATIVE_HOME` | `~/.local/share/kra-ai-native` | Directory where kra-ai-native stores its files |
-| `KRA_AI_NATIVE_NO_BANNER` | unset | Set to any value to suppress the startup banner |
-| `KRA_AI_NATIVE_PORT_RANGE` | none (or `.ai-native` value) | Host-published port range; set to `none` to disable |
-| `KRA_AI_NATIVE_PORTS` | unset | Comma-separated explicit ports to publish, e.g. `3000,8080:8080` |
-| `KRA_AI_NATIVE_NO_PORTS` | unset | Set to `1` to disable the automatic range (explicit ports still work) |
+| `AINATIVE_IMAGE` | `ainative:latest` | Docker image name/tag to use |
+| `AINATIVE_HOME` | `~/.local/share/ainative` | Directory where ainative stores its files |
+| `AINATIVE_NO_BANNER` | unset | Set to any value to suppress the startup banner |
+| `AINATIVE_PORT_RANGE` | none (or `.ai-native` value) | Host-published port range; set to `none` to disable |
+| `AINATIVE_PORTS` | unset | Comma-separated explicit ports to publish, e.g. `3000,8080:8080` |
+| `AINATIVE_NO_PORTS` | unset | Set to `1` to disable the automatic range (explicit ports still work) |
+
+### Upgrading from `kra-ai-native`
+
+Existing installs at `~/.local/share/kra-ai-native` and `~/.config/kra-ai-native` are migrated automatically to `~/.local/share/ainative` and `~/.config/ainative` the next time `install.sh` runs. The legacy `kra-ai-native` command symlink is removed. The previously built `kra-ai-native:latest` Docker image is orphaned by the new default tag `ainative:latest`; reclaim it with `docker rmi kra-ai-native:latest` once you've rebuilt under the new name (`ainative update`).
 
 ## Project structure
 
 ```
 .
-├── Dockerfile          # Container definition
-├── entrypoint.sh       # UID/GID remapping entrypoint
-├── kra-ai-native       # Launcher script
+├── ainative            # Launcher script
 ├── install.sh          # Host installation script
 ├── bin/
-│   └── kra-ai-native.js  # npm launcher shim (sets KRA_AI_NATIVE_HOME, execs the bash script)
+│   └── ainative.js     # npm launcher shim (sets AINATIVE_HOME, execs the bash script)
 ├── package.json        # npm package manifest
-└── home/
-    ├── .zshrc          # Zsh configuration
-    ├── .config/
-    │   ├── starship.toml
-    │   ├── bat/
-    │   ├── lazygit/
-    │   └── kra-ai-native/
-    └── nvim-overlay/   # AstroNvim plugin customisations
+└── docker/
+    ├── Dockerfile          # Container definition
+    ├── entrypoint.sh       # UID/GID remapping entrypoint
+    └── home/
+        ├── .zshrc          # Zsh configuration
+        ├── .config/
+        │   ├── starship.toml
+        │   ├── bat/
+        │   ├── lazygit/
+        │   └── ainative/
+        └── nvim-overlay/   # AstroNvim plugin customisations
 ```
 
 ## License

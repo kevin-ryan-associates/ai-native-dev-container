@@ -4,16 +4,16 @@ const path = require('path');
 const fs = require('fs');
 
 const pkgRoot = path.resolve(__dirname, '..');
-const script = path.join(pkgRoot, 'kra-ai-native');
+const script = path.join(pkgRoot, 'ainative');
 
 if (!fs.existsSync(script)) {
-  console.error(`kra-ai-native: launcher script missing at ${script}`);
+  console.error(`ainative: launcher script missing at ${script}`);
   process.exit(1);
 }
 
 const result = spawnSync(script, process.argv.slice(2), {
   stdio: 'inherit',
-  env: { ...process.env, KRA_AI_NATIVE_HOME: pkgRoot },
+  env: { ...process.env, AINATIVE_HOME: pkgRoot },
 });
 
 if (result.status !== null) {

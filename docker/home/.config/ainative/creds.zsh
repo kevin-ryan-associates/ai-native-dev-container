@@ -2,12 +2,12 @@
 # Must be sourced. Usage: creds
 #
 # Requires op (1Password CLI) and a credentials template with op:// references.
-# Default template: ~/.config/kra-ai-native/credentials.env (override with CREDS_TEMPLATE).
+# Default template: ~/.config/ainative/credentials.env (override with CREDS_TEMPLATE).
 
 creds() {
   emulate -L zsh
 
-  local template="${CREDS_TEMPLATE:-$HOME/.config/kra-ai-native/credentials.env}"
+  local template="${CREDS_TEMPLATE:-$HOME/.config/ainative/credentials.env}"
 
   if [[ ! -f "$template" ]]; then
     print -u2 "creds: template not found: $template"

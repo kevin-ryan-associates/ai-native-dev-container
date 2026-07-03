@@ -1,5 +1,5 @@
 {
-  "name": "kra-ai-native",
+  "name": "ainative",
   "version": "0.1.0",
   "description": "Docker-based AI-native dev environment with OpenCode, Neovim (AstroNvim), and a curated CLI toolbelt.",
   "license": "MIT",
@@ -10,14 +10,12 @@
   },
   "homepage": "https://github.com/kevin-ryan-associates/ai-native-dev-container#readme",
   "bin": {
-    "kra-ai-native": "bin/kra-ai-native.js"
+    "ainative": "bin/ainative.js"
   },
   "files": [
-    "bin/kra-ai-native.js",
-    "kra-ai-native",
-    "Dockerfile",
-    "entrypoint.sh",
-    "home"
+    "bin/ainative.js",
+    "ainative",
+    "docker"
   ],
   "engines": {
     "node": ">=18"

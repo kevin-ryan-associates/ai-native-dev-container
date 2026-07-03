@@ -1,4 +1,4 @@
-# .ai-native - project-local config for kra-ai-native
+# .ai-native - project-local config for ainative
 # Place this in your project root (or any parent directory). The launcher
 # walks up from the current directory and uses the first .ai-native found.
 # Format: key=value, one per line. Lines starting with # are ignored.
