@@ -14,6 +14,7 @@ This section collects background research, standards, and technical deep-dives t
 - [Agentic Tooling](./agents-and-models/agentic-tooling) — The anatomy of tools: where they come from (built-in, shell, MCP), what makes them good, and the safety and sovereignty dimensions.
 - [How Coding Agents Swap Models](./agents-and-models/how-coding-agents-swap-models) — The technical foundation that makes model-agnostic agents possible: the OpenAI Chat Completions format as a de facto wire standard.
 - [Model Selection](./agents-and-models/model-selection) — How to choose a model as a routing strategy: the five axes, the tiering pattern, open-weight vs frontier, and why benchmarks are a weak signal.
+- [The Model Ecosystem](./agents-and-models/the-model-ecosystem) — The three layers (labs, models, providers), the open-weight vs closed distinction, and why decoupling enables sovereignty.
 
 ## Containers & Infrastructure
 

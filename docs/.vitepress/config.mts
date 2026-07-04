@@ -43,6 +43,7 @@ export default defineConfig({
             { text: 'Agentic Tooling', link: '/research/agents-and-models/agentic-tooling' },
             { text: 'How Coding Agents Swap Models', link: '/research/agents-and-models/how-coding-agents-swap-models' },
             { text: 'Model Selection', link: '/research/agents-and-models/model-selection' },
+            { text: 'The Model Ecosystem', link: '/research/agents-and-models/the-model-ecosystem' },
           ],
         },
         {
