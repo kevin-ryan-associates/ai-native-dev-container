@@ -11,3 +11,4 @@ This section collects background research, standards, and technical deep-dives t
 - [How Coding Agents Swap Models](./how-coding-agents-swap-models) — The technical foundation that makes model-agnostic agents possible: the OpenAI Chat Completions format as a de facto wire standard.
 - [The Harness](./the-harness) — What a coding agent really is: the loop, the three components, and why the harness is where the gains are.
 - [Developing the Harness](./developing-the-harness) — The practical craft of tuning, extending, and hardening a harness — context engineering, tooling, guardrails, evaluation, and observability.
+- [Model Selection](./model-selection) — How to choose a model as a routing strategy: the five axes, the tiering pattern, open-weight vs frontier, and why benchmarks are a weak signal.
