@@ -31,6 +31,7 @@ export default defineConfig({
         {
           text: 'Research',
           items: [
+            { text: 'EU Digital Sovereignty', link: '/research/eu-digital-sovereignty' },
             { text: 'The Development Container Standard', link: '/research/devcontainer-standard' },
           ],
         },
