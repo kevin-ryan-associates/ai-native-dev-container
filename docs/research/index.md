@@ -9,3 +9,4 @@ This section collects background research, standards, and technical deep-dives t
 - [Docker and Podman](./docker-and-podman) — Clarifying the open-source status of each component, and a practical comparison of the two container engines.
 - [AI Coding Agents](./ai-coding-agents) — A survey of the AI coding agent landscape, organised around open-source vs proprietary and model-agnostic vs locked providers.
 - [How Coding Agents Swap Models](./how-coding-agents-swap-models) — The technical foundation that makes model-agnostic agents possible: the OpenAI Chat Completions format as a de facto wire standard.
+- [The Harness](./the-harness) — What a coding agent really is: the loop, the three components, and why the harness is where the gains are.
