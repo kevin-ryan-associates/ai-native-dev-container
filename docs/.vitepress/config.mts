@@ -39,6 +39,7 @@ export default defineConfig({
             { text: 'Model Selection', link: '/research/model-selection' },
             { text: 'The Development Container Standard', link: '/research/devcontainer-standard' },
             { text: 'Docker and Podman', link: '/research/docker-and-podman' },
+            { text: 'Container Registries', link: '/research/container-registries' },
           ],
         },
       ],

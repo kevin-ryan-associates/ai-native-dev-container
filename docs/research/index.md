@@ -12,3 +12,4 @@ This section collects background research, standards, and technical deep-dives t
 - [Model Selection](./model-selection) — How to choose a model as a routing strategy: the five axes, the tiering pattern, open-weight vs frontier, and why benchmarks are a weak signal.
 - [The Development Container Standard](./devcontainer-standard) — A deep dive into the devcontainer specification, its origins, and how it solves the "works on my machine" problem.
 - [Docker and Podman](./docker-and-podman) — Clarifying the open-source status of each component, and a practical comparison of the two container engines.
+- [Container Registries](./container-registries) — How container images are stored, distributed, and verified; Docker Hub as the proprietary default; and why publishing and consuming are separate decisions.
