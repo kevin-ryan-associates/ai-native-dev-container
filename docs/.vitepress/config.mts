@@ -10,6 +10,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: 'Guide', link: '/guide/getting-started' },
+      { text: 'Research', link: '/research/' },
       { text: 'Reference', link: '/reference/cli' },
     ],
 
@@ -23,6 +24,14 @@ export default defineConfig({
             { text: 'Dev Container', link: '/guide/devcontainer' },
             { text: 'Port Forwarding', link: '/guide/ports' },
             { text: 'Secrets Management', link: '/guide/secrets' },
+          ],
+        },
+      ],
+      '/research/': [
+        {
+          text: 'Research',
+          items: [
+            { text: 'The Development Container Standard', link: '/research/devcontainer-standard' },
           ],
         },
       ],
