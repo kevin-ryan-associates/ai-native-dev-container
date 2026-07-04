@@ -55,6 +55,12 @@ export default defineConfig({
             { text: 'npm Package Registries', link: '/research/containers-and-infrastructure/npm-package-registries' },
           ],
         },
+        {
+          text: 'SDLC',
+          items: [
+            { text: 'Spec-Driven Development', link: '/research/sdlc/spec-driven-development' },
+          ],
+        },
       ],
       '/reference/': [
         {

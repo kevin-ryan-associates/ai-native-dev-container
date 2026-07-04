@@ -22,3 +22,7 @@ This section collects background research, standards, and technical deep-dives t
 - [Docker and Podman](./containers-and-infrastructure/docker-and-podman) — Clarifying the open-source status of each component, and a practical comparison of the two container engines.
 - [Container Registries](./containers-and-infrastructure/container-registries) — How container images are stored, distributed, and verified; Docker Hub as the proprietary default; and why publishing and consuming are separate decisions.
 - [npm Package Registries](./containers-and-infrastructure/npm-package-registries) — The dependency supply chain for JavaScript, the Microsoft-owned default registry, and how to control it with lockfiles and self-hosted alternatives.
+
+## SDLC
+
+- [Spec-Driven Development](./sdlc/spec-driven-development) — Specifications as executable input to AI coding agents: the four phases, tooling, notation, and adoption patterns.
