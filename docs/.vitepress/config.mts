@@ -35,6 +35,7 @@ export default defineConfig({
             { text: 'The Development Container Standard', link: '/research/devcontainer-standard' },
             { text: 'Docker and Podman', link: '/research/docker-and-podman' },
             { text: 'AI Coding Agents', link: '/research/ai-coding-agents' },
+            { text: 'How Coding Agents Swap Models', link: '/research/how-coding-agents-swap-models' },
           ],
         },
       ],
