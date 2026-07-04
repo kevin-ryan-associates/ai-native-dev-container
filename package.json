@@ -24,6 +24,14 @@
     "darwin",
     "linux"
   ],
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "vitepress": "^1.5.0"
+  },
   "keywords": [
     "devcontainer",
     "docker",
