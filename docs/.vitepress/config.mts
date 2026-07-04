@@ -37,11 +37,12 @@ export default defineConfig({
         {
           text: 'Agents & Models',
           items: [
+            { text: 'AI Coding Agents', link: '/research/agents-and-models/ai-coding-agents' },
             { text: 'The Harness', link: '/research/agents-and-models/the-harness' },
             { text: 'Developing the Harness', link: '/research/agents-and-models/developing-the-harness' },
+            { text: 'Agentic Tooling', link: '/research/agents-and-models/agentic-tooling' },
             { text: 'How Coding Agents Swap Models', link: '/research/agents-and-models/how-coding-agents-swap-models' },
             { text: 'Model Selection', link: '/research/agents-and-models/model-selection' },
-            { text: 'AI Coding Agents', link: '/research/agents-and-models/ai-coding-agents' },
           ],
         },
         {

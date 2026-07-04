@@ -8,11 +8,12 @@ This section collects background research, standards, and technical deep-dives t
 
 ## Agents & Models
 
+- [AI Coding Agents](./agents-and-models/ai-coding-agents) — A survey of the AI coding agent landscape, organised around open-source vs proprietary and model-agnostic vs locked providers.
 - [The Harness](./agents-and-models/the-harness) — What a coding agent really is: the loop, the three components, and why the harness is where the gains are.
 - [Developing the Harness](./agents-and-models/developing-the-harness) — The practical craft of tuning, extending, and hardening a harness — context engineering, tooling, guardrails, evaluation, and observability.
+- [Agentic Tooling](./agents-and-models/agentic-tooling) — The anatomy of tools: where they come from (built-in, shell, MCP), what makes them good, and the safety and sovereignty dimensions.
 - [How Coding Agents Swap Models](./agents-and-models/how-coding-agents-swap-models) — The technical foundation that makes model-agnostic agents possible: the OpenAI Chat Completions format as a de facto wire standard.
 - [Model Selection](./agents-and-models/model-selection) — How to choose a model as a routing strategy: the five axes, the tiering pattern, open-weight vs frontier, and why benchmarks are a weak signal.
-- [AI Coding Agents](./agents-and-models/ai-coding-agents) — A survey of the AI coding agent landscape, organised around open-source vs proprietary and model-agnostic vs locked providers.
 
 ## Containers & Infrastructure
 
