@@ -84,6 +84,15 @@ Code flows directly to PR review; developers validate focused, testable changes 
 
 **Cursor Plan Mode** — Native SDD integration via `.cursor/rules` for context governance.
 
+**OpenSpec** — <cite index="20-1,21-1">Lightweight, open-source framework emphasizing brownfield development (modifying existing systems) over greenfield (0→1). Works with 20+ AI coding assistants including Claude Code, Cursor, Copilot, and Windsurf with no vendor lock-in and no API keys required</cite>. Distinguishing features:
+  - **Delta specs**: Propose changes rather than restating entire specifications, marking sections as "ADDED," "MODIFIED," or "REMOVED"
+  - **Source of truth model**: Separates `openspec/specs/` (current state) from `openspec/changes/` (proposed updates)
+  - **Fluid workflow**: No rigid phase gates—update any artifact in any order as understanding deepens
+  - **Slash commands**: <cite index="20-1">`/opsx:explore` (thinking partner), `/opsx:propose` (create change), `/opsx:apply` (implement), `/opsx:archive` (complete and merge)</cite>
+  - **Setup**: 5 minutes vs. 30 minutes for Spec Kit; requires Node.js 20.19.0+
+  - **Repository**: https://github.com/Fission-AI/OpenSpec/
+  - **Documentation**: https://openspec.dev/ and https://intent-driven.dev/
+
 ### Spec Notation
 
 **EARS** (Easy Approach to Requirements Syntax) — Five patterns for testable acceptance criteria:
@@ -142,6 +151,17 @@ Adopting a tool requires asking: are specs static planning documents, or operati
 
 SDD subsumes parts of TDD and BDD. Most SDD workflows still generate unit and integration tests—they're derived from the spec rather than written first.
 
+## SDD Tools Compared
+
+| Tool | Approach | Setup | Greenfield | Brownfield | Lock-in |
+|------|----------|-------|-----------|-----------|---------|
+| **GitHub Spec Kit** | Thorough, phase-gated | 30 min (Python) | ★★★★★ | ★★ | GitHub/CLI |
+| **OpenSpec** | Lightweight, fluid | 5 min (Node.js) | ★★★★ | ★★★★★ | None (agent-agnostic) |
+| **AWS Kiro** | All-in-one IDE | Native | ★★★★★ | ★★★ | AWS/Kiro IDE |
+| **Claude Code Skills** | Reusable commands | Variable | ★★★ | ★★★ | Claude ecosystem |
+
+**OpenSpec's differentiator**: Delta specs and brownfield-first design excel at evolving existing systems. <cite index="27-1">While traditional spec systems lock you into phases, OpenSpec is fluid—you can create artifacts in any order that makes sense, embrace iterative learning, and specify changes to existing behavior rather than describe entire new systems</cite>.
+
 ## Antipatterns
 
 **Heavy up-front specification with big-bang releases** — Specs drift and become unmanageable over time. Apply SDD incrementally to existing codebases in small, validated slices.
@@ -183,10 +203,17 @@ Tools like GitHub Spec Kit provide templates and automation; Claude Code Skills 
 
 ## Resources
 
+### Tools
+- **OpenSpec**: https://openspec.dev/ (lightweight SDD framework)
+  - GitHub: https://github.com/Fission-AI/OpenSpec/
+  - Intent-Driven guides: https://intent-driven.dev/knowledge/openspec/
 - **GitHub Spec Kit**: Open-source toolkit with CLI commands and agent integrations
 - **AWS Kiro**: https://kiro.dev (agentic IDE with EARS support)
-- **Thoughtworks Research**: Spec-driven development as emerging 2025 practice
-- **Intent-Driven.dev**: Comprehensive SDD workflows guide
+
+### Research & Guides
+- **Thoughtworks**: Spec-driven development as emerging 2025 practice
+- **Intent-Driven.dev**: Comprehensive SDD workflows and comparisons
+- **OpenSpec Discord**: Community and implementation support
 
 ## Key Takeaway
 
