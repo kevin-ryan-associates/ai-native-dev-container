@@ -37,6 +37,7 @@ export default defineConfig({
             { text: 'AI Coding Agents', link: '/research/ai-coding-agents' },
             { text: 'How Coding Agents Swap Models', link: '/research/how-coding-agents-swap-models' },
             { text: 'The Harness', link: '/research/the-harness' },
+            { text: 'Developing the Harness', link: '/research/developing-the-harness' },
           ],
         },
       ],
