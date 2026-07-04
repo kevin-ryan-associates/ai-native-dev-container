@@ -30,6 +30,9 @@
     "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
+    "@fontsource-variable/archivo": "^5.2.8",
+    "@fontsource-variable/work-sans": "^5.2.8",
+    "@fontsource/bebas-neue": "^5.2.7",
     "vitepress": "^1.5.0"
   },
   "keywords": [
