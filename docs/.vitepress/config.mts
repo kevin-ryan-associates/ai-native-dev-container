@@ -34,6 +34,7 @@ export default defineConfig({
             { text: 'EU Digital Sovereignty', link: '/research/eu-digital-sovereignty' },
             { text: 'The Development Container Standard', link: '/research/devcontainer-standard' },
             { text: 'Docker and Podman', link: '/research/docker-and-podman' },
+            { text: 'AI Coding Agents', link: '/research/ai-coding-agents' },
           ],
         },
       ],
