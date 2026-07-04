@@ -29,18 +29,28 @@ export default defineConfig({
       ],
       '/research/': [
         {
-          text: 'Research',
+          text: 'Governance & Sovereignty',
           items: [
-            { text: 'EU Digital Sovereignty', link: '/research/eu-digital-sovereignty' },
-            { text: 'AI Coding Agents', link: '/research/ai-coding-agents' },
-            { text: 'How Coding Agents Swap Models', link: '/research/how-coding-agents-swap-models' },
-            { text: 'The Harness', link: '/research/the-harness' },
-            { text: 'Developing the Harness', link: '/research/developing-the-harness' },
-            { text: 'Model Selection', link: '/research/model-selection' },
-            { text: 'The Development Container Standard', link: '/research/devcontainer-standard' },
-            { text: 'Docker and Podman', link: '/research/docker-and-podman' },
-            { text: 'Container Registries', link: '/research/container-registries' },
-            { text: 'npm Package Registries', link: '/research/npm-package-registries' },
+            { text: 'EU Digital Sovereignty', link: '/research/governance-and-sovereignty/eu-digital-sovereignty' },
+          ],
+        },
+        {
+          text: 'Agents & Models',
+          items: [
+            { text: 'The Harness', link: '/research/agents-and-models/the-harness' },
+            { text: 'Developing the Harness', link: '/research/agents-and-models/developing-the-harness' },
+            { text: 'How Coding Agents Swap Models', link: '/research/agents-and-models/how-coding-agents-swap-models' },
+            { text: 'Model Selection', link: '/research/agents-and-models/model-selection' },
+            { text: 'AI Coding Agents', link: '/research/agents-and-models/ai-coding-agents' },
+          ],
+        },
+        {
+          text: 'Containers & Infrastructure',
+          items: [
+            { text: 'The Development Container Standard', link: '/research/containers-and-infrastructure/devcontainer-standard' },
+            { text: 'Docker and Podman', link: '/research/containers-and-infrastructure/docker-and-podman' },
+            { text: 'Container Registries', link: '/research/containers-and-infrastructure/container-registries' },
+            { text: 'npm Package Registries', link: '/research/containers-and-infrastructure/npm-package-registries' },
           ],
         },
       ],
