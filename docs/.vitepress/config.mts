@@ -40,6 +40,7 @@ export default defineConfig({
             { text: 'The Development Container Standard', link: '/research/devcontainer-standard' },
             { text: 'Docker and Podman', link: '/research/docker-and-podman' },
             { text: 'Container Registries', link: '/research/container-registries' },
+            { text: 'npm Package Registries', link: '/research/npm-package-registries' },
           ],
         },
       ],
