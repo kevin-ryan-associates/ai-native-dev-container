@@ -26,4 +26,5 @@ This section collects background research, standards, and technical deep-dives t
 ## SDLC
 
 - [Vibe Coding, One Shots, and Spec-Driven Development](./sdlc/vibe-coding-one-shots-and-spec-driven-development) — A spectrum comparison of three AI-native development approaches and when to use each.
+- [The SDD Framework Landscape](./sdlc/the-sdd-framework-landscape) — A survey of spec-driven development frameworks, from lightweight tools to enterprise orchestration.
 - [Spec-Driven Development](./sdlc/spec-driven-development) — Specifications as executable input to AI coding agents: the four phases, tooling, notation, and adoption patterns.
