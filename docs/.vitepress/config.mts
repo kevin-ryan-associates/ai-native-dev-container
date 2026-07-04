@@ -58,6 +58,7 @@ export default defineConfig({
         {
           text: 'SDLC',
           items: [
+            { text: 'Vibe Coding, One Shots, and Spec-Driven Development', link: '/research/sdlc/vibe-coding-one-shots-and-spec-driven-development' },
             { text: 'Spec-Driven Development', link: '/research/sdlc/spec-driven-development' },
           ],
         },
