@@ -1,32 +1,18 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: 'AI-Native Dev Container',
-  description: 'Docker-based AI-native dev environment with OpenCode, Neovim (AstroNvim), and a curated CLI toolbelt.',
+  title: 'The AI-Native Engineer',
+  description: 'A guide for software engineers on the path to becoming AI-Native programmers.',
   base: '/ai-native-dev-container/',
   cleanUrls: true,
   lastUpdated: true,
 
   themeConfig: {
     nav: [
-      { text: 'Guide', link: '/guide/getting-started' },
       { text: 'Research', link: '/research/' },
-      { text: 'Reference', link: '/reference/cli' },
     ],
 
     sidebar: {
-      '/guide/': [
-        {
-          text: 'Guide',
-          items: [
-            { text: 'Getting Started', link: '/guide/getting-started' },
-            { text: 'Usage', link: '/guide/usage' },
-            { text: 'Dev Container', link: '/guide/devcontainer' },
-            { text: 'Port Forwarding', link: '/guide/ports' },
-            { text: 'Secrets Management', link: '/guide/secrets' },
-          ],
-        },
-      ],
       '/research/': [
         {
           text: 'Governance & Sovereignty',
@@ -61,16 +47,6 @@ export default defineConfig({
             { text: 'Vibe Coding, One Shots, and Spec-Driven Development', link: '/research/sdlc/vibe-coding-one-shots-and-spec-driven-development' },
             { text: 'The SDD Framework Landscape', link: '/research/sdlc/the-sdd-framework-landscape' },
             { text: 'Spec-Driven Development', link: '/research/sdlc/spec-driven-development' },
-          ],
-        },
-      ],
-      '/reference/': [
-        {
-          text: 'Reference',
-          items: [
-            { text: 'CLI Reference', link: '/reference/cli' },
-            { text: 'Configuration', link: '/reference/configuration' },
-            { text: 'Project Structure', link: '/reference/project-structure' },
           ],
         },
       ],

@@ -1,36 +1,30 @@
-# AI-Native Dev Container
+# The AI-Native Engineer Playbook
 
-> **⚠️ Early-stage project — use with caution.**
->
-> This codebase is highly volatile and under active early-stage development. APIs, commands, and configuration are likely to change without notice. Feedback and contributions are welcome, but think twice before relying on it in production environments.
+A documentation site to guide software engineers on their path to becoming AI-Native programmers.
 
-A Docker-based AI-native development environment with a curated CLI toolbelt, Neovim (AstroNvim), and [OpenCode](https://opencode.ai) pre-installed and ready to use.
+## Overview
 
-## Quick Start
-
-```bash
-# npm (recommended)
-npm install -g ainative
-
-# or via curl
-curl -fsSL https://raw.githubusercontent.com/kevin-ryan-associates/ai-native-dev-container/main/install.sh | bash
-```
-
-Launch an interactive shell:
-
-```bash
-ainative
-```
-
-Open Neovim:
-
-```bash
-ainative nvim .
-```
+This playbook covers the principles, practices, and tools that define the AI-Native approach to software engineering. From leveraging AI pair programming to architecting systems designed for intelligent automation, this resource helps engineers level up their skills for the AI era.
 
 ## Documentation
 
-📖 **[Full documentation](https://kevin-ryan-associates.github.io/ai-native-dev-container/)**
+📖 **[View the documentation site](https://kevin-ryan-associates.github.io/ai-native-dev-container/)**
+
+## Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start the dev server
+npm run docs:dev
+
+# Build for production
+npm run docs:build
+
+# Preview production build
+npm run docs:preview
+```
 
 ## License
 
