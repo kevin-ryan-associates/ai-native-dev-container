@@ -19,4 +19,4 @@ Explore the key areas that define the AI-Native engineering discipline:
 
 This is a living document. Contributions, corrections, and new research are welcome.
 
-[Edit on GitHub](https://github.com/kevin-ryan-associates/ai-native-dev-container)
+[Edit on GitHub](https://github.com/kevin-ryan-associates/the-ai-native-engineer)

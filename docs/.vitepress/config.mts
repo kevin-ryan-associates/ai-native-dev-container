@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'The AI-Native Engineer',
   description: 'A guide for software engineers on the path to becoming AI-Native programmers.',
-  base: '/ai-native-dev-container/',
+  base: '/the-ai-native-engineer/',
   cleanUrls: true,
   lastUpdated: true,
 
@@ -53,11 +53,11 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/kevin-ryan-associates/ai-native-dev-container' },
+      { icon: 'github', link: 'https://github.com/kevin-ryan-associates/the-ai-native-engineer' },
     ],
 
     editLink: {
-      pattern: 'https://github.com/kevin-ryan-associates/ai-native-dev-container/edit/main/docs/:path',
+      pattern: 'https://github.com/kevin-ryan-associates/the-ai-native-engineer/edit/main/docs/:path',
       text: 'Edit this page on GitHub',
     },
 
