@@ -8,7 +8,7 @@ This playbook covers the principles, practices, and tools that define the AI-Nat
 
 ## Documentation
 
-📖 **[View the documentation site](https://kevin-ryan-associates.github.io/ai-native-dev-container/)**
+📖 **[View the documentation site](https://kevin-ryan-associates.github.io/the-ai-native-engineer/)**
 
 ## Local Development
 
